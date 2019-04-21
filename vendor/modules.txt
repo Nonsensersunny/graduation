@@ -1,0 +1,15 @@
+# github.com/gin-gonic/gin v1.3.0
+github.com/gin-gonic/gin
+github.com/gin-gonic/gin/binding
+github.com/gin-gonic/gin/json
+github.com/gin-gonic/gin/render
+# github.com/go-sql-driver/mysql v1.4.1
+github.com/go-sql-driver/mysql
+# github.com/influxdata/influxdb v1.7.6
+github.com/influxdata/influxdb/client/v2
+github.com/influxdata/influxdb/models
+github.com/influxdata/influxdb/pkg/escape
+# github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
+github.com/op/go-logging
+# gopkg.in/yaml.v3 v3.0.0-20190409140830-cdc409dda467
+gopkg.in/yaml.v3
