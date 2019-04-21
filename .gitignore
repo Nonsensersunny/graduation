@@ -1,0 +1,5 @@
+config.yml
+.nuxt
+node_modules
+.editorconfig
+.idea
