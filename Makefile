@@ -8,6 +8,7 @@ build:
 prepare:
 	export GOPROXY=https://goproxy.io/
 	export GO111MODULE=auto
+	cd web && npm run build && npm start
 
 run: prepare
 	go run cmd/main.go
@@ -28,6 +29,10 @@ rebuild: clean build
 vue-run:
 	cd web
 	npm run dev
+
+vue-clean:
+	rm -rf web/.nuxt/dist/
+	cp web/.nuxt/dist/client/* templates
 
 vue-build:
 	cd web
