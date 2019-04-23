@@ -11,6 +11,7 @@ prepare:
 
 run:
 	go run -v cmd/main.go
+	export GO111MODULE=auto
 
 docker:
 	docker build -f deployments/Dockerfile --target builder -t ${DOCKER_BUILD_TARGET} .
