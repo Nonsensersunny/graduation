@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {ErrorCode, RespError} from "~/assets/type"
+import {ErrorCode, RespError} from "@/assets/type"
 
 export const GuestHttp = {
   client: axios.create({

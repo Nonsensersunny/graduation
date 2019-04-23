@@ -65,7 +65,7 @@ func (app *App) UserLogin(c *gin.Context)  {
 func main() {
 	app := Init()
 	r := gin.Default()
-
+	r.LoadHTMLGlob("../templates/*")
 	guestRouter := r.Group("/g")
 	{
 		guestRouter.POST("/register", app.UserRegister)
