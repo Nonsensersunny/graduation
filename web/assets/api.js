@@ -1,28 +1,30 @@
-import axios from "../.nuxt/axios";
+import axios from "axios";
 
-import {ErrorCode, RespError} from "type"
+import {ErrorCode, RespError} from "~/assets/type"
 
 export const GuestHttp = {
   client: axios.create({
-    baseURL: '/g'
+    baseURL: 'http://127.0.0.1:8888/g'
   }),
   async signin(user) {
     let data = new FormData();
     data.set('username', user.username);
     data.set('password', user.password);
-    let res = this.client.post('/register', user)
+    let res = await this.client.post('/register', user);
+    return res;
   },
   async signup(user) {
     let data = new FormData();
     data.set('username', user.username);
     data.set('password', user.password);
-    let res = this.client.post('/login', user)
+    let res = await this.client.post('/login', user);
+    return res;
   }
 }
 
 export const UserHttp = {
   client: axios.create({
-    baseURL: '/u',
+    baseURL: 'http://127.0.0.1:8888/u',
   }),
 
 }
@@ -48,4 +50,4 @@ function errorHandler(e) {
 }
 
 GuestHttp.client.interceptors.response.use(resp => resp, errorHandler);
-UserHttp.client.interceptor.response.use(resp => resp, errorHandler);
+UserHttp.client.interceptors.response.use(resp => resp, errorHandler);

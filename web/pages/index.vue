@@ -20,16 +20,51 @@
           class="button--grey"
         >GitHub</a>
       </div>
+      <el-form :model="user">
+        <el-form-item label="Username" required><el-input v-model="user.username"></el-input> </el-form-item>
+        <el-form-item label="Password" required><el-input type="password" auto-complete="false" @keyup.enter.native="login" v-model="user.password"></el-input> </el-form-item>
+      </el-form>
+      <el-button type="primary" @click="login">LOGIN</el-button>
+      <el-button type="info" @click="signup">SIGNUP</el-button>
     </div>
   </section>
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
+import {RespError} from "~/assets/type.js"
 
 export default {
   components: {
     Logo
+  },
+  data() {
+    return {
+      user: {
+        username: "",
+        password: "",
+      }
+    }
+  },
+  methods: {
+    async login() {
+      console.log("LOGIN")
+      try {
+        await this.$store.dispatch("userLogin", this.user);
+      } catch (e) {
+        if (e instanceof RespError) {
+          this.$message.error("LOGIN FAILED");
+          return;
+        } else {
+          throw e;
+        }
+        this.user.username = '';
+        this.$message.success("LOGIN SUCCESS");
+      }
+    },
+    signup() {
+
+    }
   }
 }
 </script>

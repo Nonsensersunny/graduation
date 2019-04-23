@@ -10,7 +10,7 @@ prepare:
 	export GO111MODULE=auto
 	cd web && npm run build && npm start
 
-run: prepare
+run:
 	go run cmd/main.go
 
 docker:
