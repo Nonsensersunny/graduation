@@ -1,12 +1,33 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <el-menu :default-active="activePath" router mode="horizontal">
+      <el-menu-item index="/">Home</el-menu-item>
+      <el-menu-item v-if="!isLogin" index="/about">About</el-menu-item>
+      <el-menu-item v-if="!isLogin" index="/signin">Signin</el-menu-item>
+    </el-menu>
     <router-view/>
   </div>
 </template>
+<script>
+  export default {
+    name: 'app',
+    data() {
+      return {
+        activePath: '/'
+      }
+    },
+    watch: {
+      $route(newRoute) {
+        this.activePath = newRoute.path;
+      }
+    },
+    computed: {
+      isLogin() {
+        return this.$store.state.isLogin
+      }
+    }
+  }
+</script>
 <style lang="stylus">
 #app
   font-family 'Avenir', Helvetica, Arial, sans-serif

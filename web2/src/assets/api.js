@@ -4,7 +4,7 @@ import {ErrorCode, RespError} from "@/assets/type"
 
 export const GuestHttp = {
   client: axios.create({
-    baseURL: 'http://127.0.0.1:8080/g'
+    baseURL: 'http://127.0.0.1:8888/g'
   }),
   async signin(user) {
     let data = new FormData();
@@ -24,7 +24,7 @@ export const GuestHttp = {
 
 export const UserHttp = {
   client: axios.create({
-    baseURL: 'http://127.0.0.1:8080/u',
+    baseURL: 'http://127.0.0.1:8888/u',
   }),
 
 }

@@ -12,7 +12,9 @@ prepare:
 
 run:
 	cd web2 && npm run build
-	cp -r web2/dist/* templates/
+	go run cmd/main.go
+
+fast:
 	go run cmd/main.go
 
 docker:

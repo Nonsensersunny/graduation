@@ -65,7 +65,11 @@ func (app *App) UserLogin(c *gin.Context)  {
 func main() {
 	app := Init()
 	r := gin.Default()
-	r.LoadHTMLGlob("../templates/*")
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins=[]string{app.serverConfig.Http.AllowOrigin}
+	r.Use(cors.New(corsConfig))
+
 	guestRouter := r.Group("/g")
 	{
 		guestRouter.POST("/register", app.UserRegister)
@@ -81,10 +85,6 @@ func main() {
 			})
 		})
 	}
-
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowOrigins=[]string{app.serverConfig.Http.AllowOrigin}
-	r.Use(cors.New(corsConfig))
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))
 	fmt.Println("main")
