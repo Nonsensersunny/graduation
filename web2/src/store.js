@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {GuestHttp} from "@/assets/api";
+import {GuestHttp, UserHttp} from "@/assets/api";
 
 Vue.use(Vuex)
 
@@ -21,6 +21,10 @@ export default new Vuex.Store({
     },
     async userRegister(context, playload) {
       await GuestHttp.signup(playload);
+    },
+    async getContentById(context, id) {
+      let resp = await UserHttp.getContentById(id);
+      return resp;
     }
   }
 })

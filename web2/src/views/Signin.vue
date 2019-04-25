@@ -34,6 +34,7 @@
                 console.log("LOGIN")
                 try {
                     await this.$store.dispatch("userLogin", this.user);
+                    this.$router.push("/")
                 } catch (e) {
                     if (e instanceof RespError) {
                         this.$message.error("LOGIN FAILED");

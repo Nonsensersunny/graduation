@@ -11,3 +11,12 @@ export const ErrorCode = Object.freeze({
   ServerError: 1,
   BadParams: 2,
 });
+
+export class Content {
+  constructor(title, author, category, content) {
+    this.title = title;
+    this.author = author;
+    this.category = category;
+    this.content = content;
+  }
+}

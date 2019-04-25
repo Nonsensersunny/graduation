@@ -18,6 +18,7 @@ import (
 type App struct {
 	serverConfig *config.ServerConf
 	userService *service.UserService
+	contentService *service.ContentService
 }
 
 func Init() (app App) {
@@ -30,6 +31,7 @@ func Init() (app App) {
 
 	config.InitDB(*serverConfig)
 	app.userService = service.NewUserService(config.GetMySQLClient())
+	app.contentService = service.NewContentService(config.GetMySQLClient())
 	config.InitScheme()
 	return
 }
@@ -37,6 +39,7 @@ func Init() (app App) {
 func (app *App) UserRegister(c *gin.Context) {
 	var user model.User
 	c.BindJSON(&user)
+	log.Info(user)
 	err := app.userService.CreateUser(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -62,12 +65,53 @@ func (app *App) UserLogin(c *gin.Context)  {
 	}
 }
 
+func (app *App) CreateContent(c *gin.Context) {
+	var content model.Content
+	c.BindJSON(&content)
+	err := app.contentService.ValidateContent(content)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+	} else {
+		err = app.contentService.CreateContent(content)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "success",
+	})
+}
+
+func (app *App) GetContentById(c *gin.Context) {
+	pathId := c.Query("id")
+	id, err := strconv.Atoi(pathId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+	}
+	content, err := app.contentService.GetContentById(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"content": content,
+	})
+}
+
 func main() {
 	app := Init()
 	r := gin.Default()
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowOrigins=[]string{app.serverConfig.Http.AllowOrigin}
+	corsConfig.AllowCredentials = true
 	r.Use(cors.New(corsConfig))
 
 	guestRouter := r.Group("/g")
@@ -84,6 +128,8 @@ func main() {
 				"message": "still",
 			})
 		})
+		clientRouter.GET("/content/:id", app.GetContentById)
+		clientRouter.POST("/content", app.CreateContent)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

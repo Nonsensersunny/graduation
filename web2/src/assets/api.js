@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {ErrorCode, RespError} from "@/assets/type"
+import {ErrorCode, RespError, Content} from "@/assets/type"
 
 export const GuestHttp = {
   client: axios.create({
@@ -23,10 +23,18 @@ export const GuestHttp = {
 }
 
 export const UserHttp = {
+  async createContent(title, author, category, content) {
+    let data = new Content(title, author, category, content);
+    let resp = this.client.post('/content', data)
+    return resp['message']
+  },
   client: axios.create({
     baseURL: 'http://127.0.0.1:8888/u',
   }),
-
+  async getContentById(id) {
+    let resp = await this.client.get(`/content/${id}`);
+    return resp.data["content"]
+  }
 }
 
 function errorHandler(e) {

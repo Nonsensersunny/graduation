@@ -12,8 +12,6 @@ type UserService struct {
 	client *mysql.Client
 }
 
-var emptyUser = model.User{}
-
 func NewUserService(client *mysql.Client) *UserService {
 	return &UserService{
 		client: client,
@@ -34,12 +32,8 @@ func (s *UserService) ValidateUser(user model.User) error {
 }
 
 func (s *UserService) GetByUsername(username string) (user model.User, err error) {
-	s.client.DB.Table("users").Where("username=?", username).Scan(&user)
-	if user == emptyUser {
-		err = errors.New("empty user")
-		return
-	}
-	return user, nil
+	err = s.client.DB.Table("users").Where("username=?", username).Scan(&user).Error
+	return
 }
 
 func (s *UserService) CreateUser(user model.User) error {
@@ -48,11 +42,11 @@ func (s *UserService) CreateUser(user model.User) error {
 	}
 
 	u, _ := s.GetByUsername(user.Username)
-	if u != emptyUser {
+	if u.Username != "" {
 		return errors.New("User already exists.")
 	}
 
 	user.Salt = utils.RandSalt()
 	user.Password = utils.MD5Encode(user.Password, user.Salt)
-	return s.client.DB.Table("users").Create(user).Error
+	return s.client.DB.Table("users").Create(&user).Error
 }
