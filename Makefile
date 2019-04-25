@@ -11,7 +11,7 @@ prepare:
 	cd web && npm run build && npm start
 
 run:
-	cd web2 && npm run build
+	cd web2; npm run build
 	go run cmd/main.go
 
 fast:

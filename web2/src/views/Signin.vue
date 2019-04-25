@@ -50,6 +50,7 @@
                 try {
                     await this.$store.dispatch("userRegister", this.user);
                     this.$message.success("SIGNUP SUCCESS");
+                    this.$router.push("/");
                 } catch (e) {
                     console.log(e instanceof RespError)
                     if (e instanceof RespError) {
