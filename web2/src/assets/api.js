@@ -2,14 +2,18 @@ import axios from "axios";
 
 import {ErrorCode, RespError, Content} from "@/assets/type"
 
+// axios.defaults.withCredentials = true;
+
 export const GuestHttp = {
   client: axios.create({
-    baseURL: 'http://127.0.0.1:8888/g'
+    baseURL: 'http://127.0.0.1:8888/g',
+    withCredentials:true
   }),
   async signin(user) {
     let data = new FormData();
     data.set('username', user.username);
     data.set('password', user.password);
+    console.log(data)
     let res = await this.client.post('/login', user);
     return res;
   },
@@ -30,6 +34,7 @@ export const UserHttp = {
   },
   client: axios.create({
     baseURL: 'http://127.0.0.1:8888/u',
+    withCredentials:true
   }),
   async getContentById(id) {
     let resp = await this.client.get(`/content/${id}`);
@@ -59,3 +64,5 @@ function errorHandler(e) {
 
 GuestHttp.client.interceptors.response.use(resp => resp, errorHandler);
 UserHttp.client.interceptors.response.use(resp => resp, errorHandler);
+// GuestHttp.client.request({withCredentials: true})
+// UserHttp.client.request({withCredentials: true})

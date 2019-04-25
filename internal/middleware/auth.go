@@ -3,7 +3,6 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"graduation/internal/config"
-	"graduation/internal/log"
 	"net/http"
 )
 
@@ -16,8 +15,6 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 		session_id, err := c.Cookie("session_id")
-		log.Info(err)
-		log.Info(session_id)
 		if err != nil {
 			c.Abort()
 			c.String(http.StatusPreconditionFailed, "cookie session_id expired")

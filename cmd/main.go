@@ -8,6 +8,7 @@ import (
 	"graduation/internal/config"
 	"graduation/internal/log"
 	"graduation/internal/middleware"
+	"graduation/internal/utils"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/service"
 	"net/http"
@@ -19,6 +20,20 @@ type App struct {
 	serverConfig *config.ServerConf
 	userService *service.UserService
 	contentService *service.ContentService
+}
+
+func ErrorHelper(err error, statusCode int) gin.H {
+	return gin.H{
+		"error": err,
+		"code": statusCode,
+	}
+}
+
+func RespHelper(data...interface{}) gin.H {
+	return gin.H{
+		"code": utils.SUCCESS,
+		"content": data,
+	}
 }
 
 func Init() (app App) {
@@ -42,10 +57,10 @@ func (app *App) UserRegister(c *gin.Context) {
 	log.Info(user)
 	err := app.userService.CreateUser(user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		c.JSON(http.StatusOK, ErrorHelper(err, utils.REGISTER_FAIL))
+		return
 	}
+	c.JSON(http.StatusOK, RespHelper("success"))
 }
 
 func (app *App) UserLogin(c *gin.Context)  {
@@ -53,15 +68,15 @@ func (app *App) UserLogin(c *gin.Context)  {
 	c.BindJSON(&user)
 	err := app.userService.ValidateUser(user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		c.JSON(http.StatusOK, ErrorHelper(err, utils.LOGIN_FAIL))
+		return
 	} else {
 		sessionId := uuid.FromTime(time.Now()).String()
 		config.RedisClient.Set(user.Username + "-session_id", sessionId, time.Hour)
 		c.SetCookie("username", user.Username, 3600, "/", "", false, false)
+		log.Infof(c.Request.URL.Host)
 		c.SetCookie("session_id", sessionId, 3600, "/", "", false, false)
-		c.String(http.StatusOK, "success")
+		c.JSON(http.StatusOK, RespHelper("success"))
 	}
 }
 
@@ -70,39 +85,31 @@ func (app *App) CreateContent(c *gin.Context) {
 	c.BindJSON(&content)
 	err := app.contentService.ValidateContent(content)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		c.JSON(http.StatusOK, ErrorHelper(err, utils.INVALID_CONTENT))
+		return
 	} else {
 		err = app.contentService.CreateContent(content)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": err.Error(),
-			})
+			c.JSON(http.StatusOK, ErrorHelper(err, utils.CREATE_CONTENT_FAIL))
+			return
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "success",
-	})
+	c.JSON(http.StatusOK, ErrorHelper(nil, utils.SUCCESS))
 }
 
 func (app *App) GetContentById(c *gin.Context) {
-	pathId := c.Query("id")
+	pathId := c.Param("id")
 	id, err := strconv.Atoi(pathId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		c.JSON(http.StatusOK, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
 	}
 	content, err := app.contentService.GetContentById(id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		c.JSON(http.StatusOK, ErrorHelper(err, utils.FETCH_CONTENT_FAIL))
+		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"content": content,
-	})
+	c.JSON(http.StatusOK, RespHelper(content))
 }
 
 func main() {

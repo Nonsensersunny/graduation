@@ -11,12 +11,11 @@ prepare:
 	cd web && npm run build && npm start
 
 run:
-	cd web2 && npm run build
+	cd web2; npm run build
 	go run cmd/main.go
 
 fast:
 	go run cmd/main.go
-
 docker:
 	docker build -f deployments/Dockerfile --target builder -t ${DOCKER_BUILD_TARGET} .
 	docker build -f deployments/Dockerfile -t ${DOCKER_TARGET} .
