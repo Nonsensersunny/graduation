@@ -14,7 +14,7 @@
 <script>
     // @ is an alias to /src
     import HelloWorld from '@/components/HelloWorld.vue'
-    import {RespError} from '@/assets/type'
+    import {RespError} from '@/assets/js/type'
 
     export default {
         name: 'signin',

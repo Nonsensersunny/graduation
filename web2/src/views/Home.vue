@@ -4,13 +4,16 @@
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
     <el-container>
       <el-main><Gcontent :content="mockContent" /></el-main>
-      <el-aside width="200px">
+      <el-aside width="230px" class="side-board">
+        <Gdashboard activePath="share" />
         <Grank />
-        <Gtopic />
+        <Gtop />
         <Glinks />
-        <Gdashboard />
       </el-aside>
     </el-container>
+    <el-footer>
+      <Gfooter />
+    </el-footer>
   </div>
 </template>
 
@@ -19,15 +22,15 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 import Gcontent from '@/components/Gcontent.vue'
 import Grank from '@/components/Grank.vue'
-import Gtopic from '@/components/Gtopic.vue';
+import Gtop from '@/components/Gtop.vue';
 import Glinks from '@/components/Glinks.vue';
 import Gdashboard from '@/components/Gdashboard.vue';
-
+import Gfooter from '@/components/Gfooter.vue';
 
 export default {
   name: 'home',
   components: {
-    HelloWorld, Gcontent, Grank, Gtopic, Glinks, Gdashboard
+    HelloWorld, Gcontent, Grank, Gtop, Glinks, Gdashboard, Gfooter
   },
   data() {
     return {
@@ -46,3 +49,12 @@ export default {
   }
 }
 </script>
+<style lang="stylus" scoped>
+  .side-board {
+
+  }
+  .side-board * {
+    margin-top: 10px;
+    padding: 10px 0 10px 0;
+  }
+</style>

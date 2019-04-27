@@ -2,10 +2,12 @@ package service
 
 import (
 	"errors"
+	"github.com/jinzhu/gorm"
 	"graduation/internal/utils"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/modules/mysql"
 	"strings"
+	"time"
 )
 
 type UserService struct {
@@ -49,4 +51,68 @@ func (s *UserService) CreateUser(user model.User) error {
 	user.Salt = utils.RandSalt()
 	user.Password = utils.MD5Encode(user.Password, user.Salt)
 	return s.client.DB.Table("users").Create(&user).Error
+}
+
+func (s *UserService) UpdateUserGrades(id int, cat string) error {
+	var add int
+	switch  {
+		case cat == model.SHARE: add = 5
+		case cat == model.QUESTION: add = 4
+		case cat == model.TOPIC: add = 3
+		case cat == model.RECRUIMENT: add = 2
+		default: add = 1
+	}
+	return s.client.DB.Table("users").Where("id = ?", id).Update("grades", gorm.Expr("grades + ?", add)).Error
+}
+
+type ReqUser struct {
+	Id int `json:"id"`
+	Username string `json:"username"`
+	Grades int `json:"grades"`
+	Time time.Time `json:"time"`
+	Avatar string `json:"avatar"`
+	Description string `json:"description"`
+	Mail string `json:"mail"`
+	Sex int `json:"sex"`
+
+	ShareNum int `json:"share_num"`
+	TopicNum int `json:"topic_num"`
+	QuestNum int `json:"quest_num"`
+	RecuiNum int `json:"recui_num"`
+	CommeNum int `json:"comme_num"`
+}
+
+func (s *UserService) GetRankedUsers() (users []ReqUser, err error) {
+	err = s.client.DB.Table("users").Find(&users).Order("grades DESC", true).Limit(10).Scan(&users).Error
+	return
+}
+
+func (s *UserService) GetUserIdByName(username string) (id int, err error) {
+	var user model.User
+	err = s.client.DB.Table("users").Where("username = ?", username).Find(&user).Error
+	if err != nil {
+		return
+	}
+	return user.Id, nil
+}
+
+func (s *UserService) GetUserProfileByName(username string) (user ReqUser, err error) {
+	id, err := s.GetUserIdByName(username)
+	if err != nil {
+		return
+	}
+	return s.GetUserProfileById(id)
+}
+
+func (s * UserService) GetUserProfileById(id int) (user ReqUser, err error) {
+	err = s.client.DB.Table("users").Where("id = ?", id).Find(&user).Error
+	if err != nil {
+		return
+	}
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Share").Count(&user.ShareNum)
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Topic").Count(&user.TopicNum)
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Q&A").Count(&user.QuestNum)
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Recruit").Count(&user.RecuiNum)
+	s.client.DB.Table("comments").Where("from = ?", id).Count(&user.CommeNum)
+	return
 }

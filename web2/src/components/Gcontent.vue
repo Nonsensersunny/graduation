@@ -1,26 +1,39 @@
 <template>
     <div class="content">
-        <el-button @click="getDetail(0)">Get Detail</el-button>
-        <!--<Gdetail :content="this.$store.context.content" v-if="getDetail(0)" />-->
+        <el-tabs type="border-card">
+            <el-tab-pane label="All">
+                <Glist category="All" />
+            </el-tab-pane>
+            <el-tab-pane label="Share">
+                <Glist category="Share" />
+            </el-tab-pane>
+            <el-tab-pane label="Q&A">
+                <Glist category="Q&A" />
+            </el-tab-pane>
+            <el-tab-pane label="Recruit">
+                <Glist category="Recruit" />
+            </el-tab-pane>
+            <el-tab-pane label="Topic">
+                <Glist category="Topic" />
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 
 <script>
     import Gdetail from '@/components/Gdetail.vue'
+    import Glist from '@/components/Glist.vue'
     export default {
         name: 'HelloWorld',
         components: {
-            Gdetail,
+            Gdetail, Glist
         },
         data() {
             return {
             }
         },
         methods: {
-            async getDetail(id) {
-                let resp = await this.$store.dispatch("getContentById", id);
-                console.log(resp)
-            }
+
         },
         created() {
 

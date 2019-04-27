@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        This is footer
+        &copy;2019 Zyven All rights reserved
     </div>
 </template>
 
@@ -15,5 +15,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
-
+.footer {
+    text-align: center;
+}
 </style>

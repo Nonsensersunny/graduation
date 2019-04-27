@@ -3,10 +3,10 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>Links</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text">MORE>></el-button>
             </div>
-            <div v-for="o in 4" :key="o" class="text item">
-                {{'列表内容 ' + o }}
+            <div v-for="link in links" :key="link.id" class="text item">
+                {{ link }}
             </div>
         </el-card>
     </div>
@@ -16,8 +16,8 @@
     export default {
         name: 'HelloWorld',
         props: {
-            msg: String
-        }
+            links: []
+        },
     }
 </script>
 
@@ -41,6 +41,6 @@
     }
 
     .box-card {
-        width: 180px;
+        width: 200px;
     }
 </style>

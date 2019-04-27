@@ -1,15 +1,25 @@
 export class RespError {
-  constructor(status, code, msg) {
-    this.status = status;
+  constructor(error, code, data) {
+    this.error = error;
     this.code = code;
-    this.msg = msg;
+    this.data = data;
   }
 }
 
 export const ErrorCode = Object.freeze({
   Undefined: 0,
+  UnknownError: -1,
   ServerError: 1,
   BadParams: 2,
+  RegisterFail: 1000,
+  LoginFail: 1001,
+
+  InvalidContent: 2000,
+  CreateContentFail: 2001,
+  FetchContentFail: 2002,
+
+  InvalidPathPara: 3000,
+  InvalidFormPara: 3001
 });
 
 export class Content {

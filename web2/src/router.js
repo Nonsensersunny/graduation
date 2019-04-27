@@ -31,7 +31,7 @@ export default new Router({
     },
     {
       path: '/ebook',
-      name: '/ebook',
+      name: 'ebook',
       component: () => import('./views/Gebook.vue')
     },
     {
@@ -39,5 +39,25 @@ export default new Router({
       name: 'vote',
       component: () => import('./views/Gvote.vue')
     },
+    {
+      path: '/writer',
+      name: 'writer',
+      component: () => import('./views/Writer.vue')
+    },
+    {
+      path: '/content/:cat/:id',
+      name: 'content',
+      component: () => import('./views/Garticle.vue'),
+      props: {
+        cat: {
+          type: String,
+          required: true
+        },
+        id: {
+          type: Number,
+          required: true
+        }
+      }
+    }
   ]
 })

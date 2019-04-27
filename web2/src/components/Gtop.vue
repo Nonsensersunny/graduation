@@ -1,25 +1,39 @@
 <template>
-    <div class="dashboard">
+    <div class="top">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>Dashboard</span>
+                <span>Top</span>
                 <el-button style="float: right; padding: 3px 0" type="text">MORE>></el-button>
             </div>
-            <el-button @click="goWriter">Add {{ activePath }}</el-button>
+            <div v-for="content in contents" :key="content.id" class="text item" @click="goDetail(content.category, content.id)">
+                <el-tag type="primary">{{ content.category }}</el-tag>
+                <span>{{ content.title }}</span>
+            </div>
         </el-card>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'HelloWorld',
+        name: 'Gtop',
         props: {
-            activePath: ""
+
+        },
+        data() {
+            return {
+                contents: [],
+            }
         },
         methods: {
-            goWriter() {
-                this.$router.push('/writer')
+            async getTopContent() {
+                this.contents = await this.$store.dispatch("getTopContent")
+            },
+            goDetail(cat, id) {
+                this.$router.push(`/content/${cat}/${id}`)
             }
+        },
+        created() {
+            this.getTopContent()
         }
     }
 </script>

@@ -3,17 +3,17 @@ package model
 import "time"
 
 type User struct {
-	Id int
-	Time time.Time
-	Username string
-	Password string
-	Salt string
-	Avatar string
-	Grades int
-	Description string
-	Mail string
-	Sex int
-	Favorites []Favorite
+	Id int `sql:"pk" json:"id"`
+	Time time.Time `gorm:"default:now()" json:"time"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Salt string `json:"salt"`
+	Avatar string `json:"avatar"`
+	Grades int `json:"grades"`
+	Description string `json:"description"`
+	Mail string `json:"mail"`
+	Sex int `json:"sex"`
+	Favorites []Favorite `json:"favorites"`
 }
 
 type Favorite struct {

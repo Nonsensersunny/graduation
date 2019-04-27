@@ -2,9 +2,9 @@
   <div id="app">
     <el-menu :default-active="activePath" router mode="horizontal">
       <el-menu-item index="/">Home</el-menu-item>
-      <el-menu-item v-if="!isLogin" index="/ebook">Books</el-menu-item>
-      <el-menu-item v-if="!isLogin" index="/vote">Votes</el-menu-item>
-      <el-menu-item v-if="!isLogin" index="/about">About</el-menu-item>
+      <el-menu-item v-if="isLogin" index="/ebook">Books</el-menu-item>
+      <el-menu-item v-if="isLogin" index="/vote">Votes</el-menu-item>
+      <el-menu-item v-if="isLogin" index="/about">About</el-menu-item>
       <el-menu-item v-if="!isLogin" index="/signin">Signin</el-menu-item>
     </el-menu>
     <router-view/>
@@ -13,6 +13,9 @@
 <script>
   export default {
     name: 'app',
+    beforeCreate() {
+      this.$store.dispatch("checkLoginStatus")
+    },
     data() {
       return {
         activePath: '/'
@@ -45,4 +48,7 @@
     /*color #2c3e50*/
     /*&.router-link-exact-active*/
       /*color #42b983*/
+  #app {
+    margin: 0 100px 0 100px;
+  }
 </style>

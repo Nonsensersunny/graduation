@@ -5,7 +5,7 @@ import "time"
 type Content struct {
 	Id int `json:"id"`
 	Title string `json:"title"`
-	Time time.Time `sql:"default now()" json:"time"`
+	Time time.Time `gorm:"default:now()" json:"time"`
 	Author int `json:"author"`
 	Views int `sql:"default 0" json:"views"`
 	Category string `json:"category"`
