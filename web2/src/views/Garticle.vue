@@ -20,7 +20,7 @@
                     <i class="el-icon-star-off"  style="float: right; padding: 0px 3px"></i>
                 </el-tooltip>
             </div>
-            <Gmdisplay :content="content.content" />
+            <Gmdisplay :content="content.content" v-if="content" />
             <MarkDown />
             <div slot="footer" class="clearfix">
 

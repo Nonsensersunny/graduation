@@ -3,7 +3,7 @@ package model
 import "time"
 
 type User struct {
-	Id int `sql:"pk" json:"id"`
+	Id int `gorm:"primary_key" json:"id"`
 	Time time.Time `gorm:"default:now()" json:"time"`
 	Username string `json:"username"`
 	Password string `json:"password"`

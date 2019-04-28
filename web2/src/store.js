@@ -44,7 +44,8 @@ export default new Vuex.Store({
       return resp;
     },
     async createContent(context, {title, author, category, content}) {
-      await UserHttp.createContent(title, author, category, content)
+      let res = await UserHttp.createContent(title, author, category, content);
+      return res
     },
     async getRankedContent(context) {
       return await GuestHttp.getRankedContent()

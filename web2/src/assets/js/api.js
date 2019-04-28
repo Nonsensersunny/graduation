@@ -48,8 +48,8 @@ export const UserHttp = {
   },
   async createContent(title, author, category, content) {
     let data = new Content(title, author, category, content);
-    let resp = this.client.post('/content', data)
-    return resp.data['data']
+    let resp = await this.client.post('/content', data)
+    return resp.data.data['status']
   },
   async getRankedUsers() {
     let resp = await this.client.get("/rank");

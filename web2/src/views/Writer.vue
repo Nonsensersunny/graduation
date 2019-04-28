@@ -26,6 +26,7 @@
 </template>
 
 <script>
+    import {RespError} from "@/assets/js/type";
     export default {
         name: 'Writer',
         components: {
@@ -36,11 +37,24 @@
                 console.log(this.content)
             },
             async createContent() {
-                let title = this.title
-                let author = this.$store.getters.profile.id
-                let category = this.selectedCategory
-                let content = this.content
-                await this.$store.dispatch("createContent", {title, author, category, content})
+                try {
+                    let title = this.title
+                    let author = this.$store.getters.profile.id
+                    let category = this.selectedCategory
+                    let content = this.content
+                    let resp = await this.$store.dispatch("createContent", {title, author, category, content})
+                    if (resp === 'success') {
+                        this.$message.success("Create " + category + " success")
+                        this.$router.push('/')
+                    } else {
+                        this.$message.info("Network busy, please try later")
+                    }
+                } catch (e) {
+                    if (e instanceof RespError) {
+                        this.$message.error(e.error)
+                    }
+                }
+
             }
         },
         data() {

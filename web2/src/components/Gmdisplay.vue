@@ -1,6 +1,6 @@
 <template>
     <div class="display">
-        <div v-html="compile(content)"></div>
+        <div v-html="compile(content)" v-if="content"></div>
     </div>
 </template>
 <script>
@@ -10,7 +10,7 @@
         props: {
             content: {
                 type: String,
-                required: true,
+                required: false,
             }
         },
         data() {
@@ -19,7 +19,11 @@
         },
         methods: {
             compile(input) {
-                return marked(input)
+                if (input) {
+                    return marked(input)
+                } else {
+                    return "Oops, error happens..."
+                }
             }
         }
     }
