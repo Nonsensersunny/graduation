@@ -30,3 +30,15 @@ export class Content {
     this.content = content;
   }
 }
+
+export class User {
+  constructor() {
+    this.id = 0
+    this.username = ''
+    this.password = ''
+    this.avatar = ''
+    this.description = ''
+    this.mail = ''
+    this.sex = 0
+  }
+}

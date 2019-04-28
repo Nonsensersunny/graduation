@@ -31,21 +31,25 @@ export default new Vuex.Store({
     },
     async userLogin(context, playload) {
       context.state.profile = await GuestHttp.signin(playload);
+      context.state.isLogin = true
     },
     async userRegister(context, playload) {
       await GuestHttp.signup(playload);
     },
+    async getProfileByName(context, username) {
+      return await GuestHttp.getProfileByName(username);
+    },
+    async getProfileById(context, id) {
+      return await GuestHttp.getProfileById(id);
+    },
     async getRankedUsers(context) {
-      let resp = await UserHttp.getRankedUsers()
-      context.state.rankeduser = resp
+      context.state.rankeduser = await UserHttp.getRankedUsers()
     },
     async getContentById(context, id) {
-      let resp = await GuestHttp.getContentById(id);
-      return resp;
+      return await GuestHttp.getContentById(id);
     },
     async createContent(context, {title, author, category, content}) {
-      let res = await UserHttp.createContent(title, author, category, content);
-      return res
+      return await UserHttp.createContent(title, author, category, content);
     },
     async getRankedContent(context) {
       return await GuestHttp.getRankedContent()
@@ -55,6 +59,9 @@ export default new Vuex.Store({
     },
     async getTopContent(context) {
       return await UserHttp.getTopContent()
+    },
+    async updateUserProfile(context, user) {
+      context.state.profile = await UserHttp.updateUserProfile(user)
     }
   }
 })

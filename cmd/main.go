@@ -94,7 +94,7 @@ func (app *App) UserLogin(c *gin.Context)  {
 		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.LOGIN_FAIL))
 		return
 	} else {
-		info, err := app.userService.GetUserIdByName(user.Username)
+		info, err := app.userService.GetUserProfileByName(user.Username)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.LOGIN_FAIL))
 			return
@@ -215,6 +215,27 @@ func (app *App) GetUserProfileByName(c *gin.Context) {
 	c.JSON(http.StatusOK, RespHelper(SetData("data", user)))
 }
 
+func (app *App) UpdateUserProfile(c *gin.Context) {
+	var user model.User
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UPDATE_PROFILE_FAIL))
+		return
+	}
+	log.Info(user)
+	err = app.userService.UpdateUserProfile(user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UPDATE_PROFILE_FAIL))
+		return
+	}
+	newUser, err := app.userService.GetUserProfileById(user.Id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UPDATE_PROFILE_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SetData("data", newUser)))
+}
+
 func main() {
 	app := Init()
 	r := gin.Default()
@@ -248,6 +269,7 @@ func main() {
 		clientRouter.GET("/status", app.CheckLoginStatus)
 		clientRouter.GET("/contents", app.GetTopContent)
 		clientRouter.GET("/rank", app.GetRankedUsers)
+		clientRouter.POST("/profile/update", app.UpdateUserProfile)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

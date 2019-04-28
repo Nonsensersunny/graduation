@@ -7,8 +7,13 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import {leancloud} from "./assets/js/config";
+import AV from 'leancloud-storage'
 
-
+AV.init({
+  appId: leancloud.APP_ID,
+  appKey: leancloud.APP_KEY
+})
 
 Vue.config.productionTip = false
 

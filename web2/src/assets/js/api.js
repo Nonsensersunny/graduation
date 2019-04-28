@@ -1,12 +1,13 @@
 import axios from "axios";
 
 import {ErrorCode, RespError, Content} from "@/assets/js/type"
+import {server} from "@/assets/js/config";
 
 // axios.defaults.withCredentials = true;
 
 export const GuestHttp = {
   client: axios.create({
-    baseURL: 'http://127.0.0.1:8888/g',
+    baseURL: `http://${server.host}:${server.port}/g`,
     withCredentials:true
   }),
   async signin(user) {
@@ -35,11 +36,19 @@ export const GuestHttp = {
     let resp = await this.client.get('/contents');
     return resp.data.data['data']
   },
+  async getProfileByName(username) {
+    let resp = await this.client.get(`/profile/username/${username}`);
+    return resp.data.data['data']
+  },
+  async getProfileById(id) {
+    let resp = await this.client.get(`/profile/id/${id}`);
+    return resp.data.data['data']
+  },
 }
 
 export const UserHttp = {
   client: axios.create({
-    baseURL: 'http://127.0.0.1:8888/u',
+    baseURL: `http://${server.host}:${server.port}/u`,
     withCredentials:true
   }),
   async checkLoginStatus() {
@@ -57,6 +66,10 @@ export const UserHttp = {
   },
   async getTopContent() {
     let resp = await this.client.get("/contents");
+    return resp.data.data["data"]
+  },
+  async updateUserProfile(user) {
+    let resp = await this.client.post(user);
     return resp.data.data["data"]
   }
 }

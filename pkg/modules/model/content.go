@@ -7,10 +7,10 @@ type Content struct {
 	Title string `json:"title"`
 	Time time.Time `gorm:"default:now()" json:"time"`
 	Author int `json:"author"`
-	Views int `sql:"default 0" json:"views"`
+	Views int `gorm:"default:0" json:"views"`
 	Category string `json:"category"`
-	IsKey bool `sql:"default false" json:"is_key"`
-	Content string `json:"content"`
+	IsKey bool `gorm:"default:false" json:"is_key"`
+	Content string `gorm:"text" json:"content"`
 }
 
 const (

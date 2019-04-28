@@ -104,7 +104,7 @@ func (s *UserService) GetUserProfileByName(username string) (user ReqUser, err e
 	return s.GetUserProfileById(id)
 }
 
-func (s * UserService) GetUserProfileById(id int) (user ReqUser, err error) {
+func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 	err = s.client.DB.Table("users").Where("id = ?", id).Find(&user).Error
 	if err != nil {
 		return
@@ -115,4 +115,8 @@ func (s * UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Recruit").Count(&user.RecuiNum)
 	s.client.DB.Table("comments").Where("from = ?", id).Count(&user.CommeNum)
 	return
+}
+
+func (s *UserService) UpdateUserProfile(user model.User) error {
+	return s.client.DB.Table("users").Save(&user).Error
 }

@@ -17,7 +17,7 @@ type User struct {
 }
 
 type Favorite struct {
-	Id int
-	Uid int
-	Cid int
+	Id int `gorm:"primary_key" json:"id"`
+	Uid int `json:"uid"`
+	Cid int `json:"cid"`
 }

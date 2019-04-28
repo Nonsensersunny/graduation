@@ -5,7 +5,7 @@
                 <span>Rank</span>
                 <el-button style="float: right; padding: 3px 0" type="text">MORE>></el-button>
             </div>
-            <div v-for="(user, id) in rankedUsers" :key="user.id" class="rank-list text item">
+            <div v-for="(user, id) in rankedUsers" :key="user.id" class="rank-list text item" @click="$router.push(`/profile/${user.id}`)">
                 <span class="index">{{ id + 1 }}</span>
                 <span class="grades">{{ user.grades }}</span>
                 <span class="username">{{ user.username }}</span>

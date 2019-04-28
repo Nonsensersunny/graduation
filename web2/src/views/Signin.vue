@@ -31,10 +31,12 @@
         },
         methods: {
             async login() {
-                console.log("LOGIN")
                 try {
                     await this.$store.dispatch("userLogin", this.user);
-                    this.$router.push("/")
+                    if (this.$store.state.isLogin) {
+                        this.$message.success("LOGIN SUCCESS");
+                        this.$router.push("/")
+                    }
                 } catch (e) {
                     if (e instanceof RespError) {
                         this.$message.error("LOGIN FAILED");
@@ -42,12 +44,9 @@
                     } else {
                         throw e;
                     }
-                    this.user.username = '';
-                    this.$message.success("LOGIN SUCCESS");
                 }
             },
             async signup() {
-                console.log("SIGNUP")
                 try {
                     await this.$store.dispatch("userRegister", this.user);
                     this.$message.success("SIGNUP SUCCESS");

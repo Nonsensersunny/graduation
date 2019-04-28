@@ -58,6 +58,17 @@ export default new Router({
           required: true
         }
       }
-    }
+    },
+    {
+      path: '/profile/:id',
+      name: 'profile',
+      component: () => import('./views/Gprofile.vue'),
+      props: {
+        id: {
+          type: Number,
+          required: false
+        }
+      }
+    },
   ]
 })
