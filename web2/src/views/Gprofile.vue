@@ -1,46 +1,32 @@
 <template>
     <div>
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="true">
-            <el-submenu index="1">
-                <template slot="title">
-                    <i class="el-icon-location"></i>
-                    <span slot="title">导航一</span>
-                </template>
-                <el-menu-item-group>
-                    <span slot="title">分组一</span>
-                    <el-menu-item index="1-1">选项1</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group title="分组2">
-                    <el-menu-item index="1-3">选项3</el-menu-item>
-                </el-menu-item-group>
-                <el-submenu index="1-4">
-                    <span slot="title">选项4</span>
-                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                </el-submenu>
-            </el-submenu>
-            <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-            </el-menu-item>
-            <el-menu-item index="3" disabled>
-                <i class="el-icon-document"></i>
-                <span slot="title">导航三</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
-            </el-menu-item>
-        </el-menu>
         <el-card class="box-card">
-            <div>{{ profile.username }}</div>
-            <div>{{ profile.description }}</div>
+            <div>Username:{{ profile.username }}</div>
+            <i class="el-icon-male"></i><i class="el-icon-female"></i>
+            <div>Grades:{{ profile.grades }}</div>
+            <div>Mail:{{ profile.mail }}</div>
+            <div>Description:{{ profile.description }}</div>
         </el-card>
         <el-card class="box-card" v-if="canOperate">
             <el-input v-model="user.username" :placeholder="profile.username"></el-input>
             <el-input v-model="user.description" :placeholder="profile.description"></el-input>
             <el-button @click="updateUserProfile" type="primary">Submit</el-button>
         </el-card>
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="密码" prop="pass">
+                <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPass">
+                <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄" prop="age">
+                <el-input v-model.number="ruleForm.age"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 <script>
@@ -48,10 +34,61 @@
     export default {
         name: "Gprofile",
         data() {
+            var checkAge = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('年龄不能为空'));
+                }
+                setTimeout(() => {
+                    if (!Number.isInteger(value)) {
+                        callback(new Error('请输入数字值'));
+                    } else {
+                        if (value < 18) {
+                            callback(new Error('必须年满18岁'));
+                        } else {
+                            callback();
+                        }
+                    }
+                }, 1000);
+            };
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.ruleForm.checkPass !== '') {
+                        this.$refs.ruleForm.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            var validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
             return {
                 profile: {},
                 user: new User(),
-            }
+                ruleForm: {
+                    pass: '',
+                    checkPass: '',
+                    age: ''
+                },
+                rules: {
+                    pass: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        { validator: validatePass2, trigger: 'blur' }
+                    ],
+                    age: [
+                        { validator: checkAge, trigger: 'blur' }
+                    ]
+                }
+            };
         },
         computed: {
             id() {
@@ -75,7 +112,7 @@
             async updateUserProfile() {
                 try {
                     this.user.id = this.$store.getters.profile.id
-                    console.log(this.profile)
+                    console.log(this.profile, this.user.description)
                     await this.$store.dispatch("updateUserProfile", this.user)
                     this.$store.dispatch("checkLoginStatus")
                     if (this.$store.state.isLogin) {
@@ -87,6 +124,19 @@
                         this.$router.push('/')
                     }
                 }
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             }
         },
         created() {

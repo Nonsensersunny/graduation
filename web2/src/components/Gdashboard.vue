@@ -2,8 +2,8 @@
     <div class="dashboard">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>Dashboard</span>
-                <el-button style="float: right; padding: 3px 0" type="text">MORE>></el-button>
+                <span>{{ $t('message.common.dashboard') }}</span>
+                <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
             <p @click="$router.push(`/profile/${profile.id}`)">{{ profile.username }}</p>
             <el-button @click="goWriter">Add {{ activePath }}</el-button>

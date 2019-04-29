@@ -1,0 +1,87 @@
+{
+  "common": {
+    "share": "Share",
+    "topic": "Topic",
+    "home": "Home",
+    "votes": "Votes",
+    "signin": "Signin",
+    "login": "Login",
+    "author": "Author",
+    "views": "Views",
+    "rank": "Rank",
+    "top": "Top",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "books": "Books",
+    "about": "About",
+    "lang": "Language",
+    "category": "Category",
+    "title": "Title",
+    "more": "MORE",
+    "links": "Links"
+  },
+  "about": {
+
+  },
+  "article": {
+    "T": "Time"
+  },
+  "ebook": {
+
+  },
+  "profile": {
+
+  },
+  "vote": {
+
+  },
+  "home": {
+
+  },
+  "signin": {
+
+  },
+  "writer": {
+
+  },
+  "content": {
+
+  },
+  "dashboard": {
+    "A ": "All"
+  },
+  "detail": {
+
+  },
+  "footer": {
+    "C": "Copyright",
+    "A": "All Rights Reserved"
+  },
+  "header": {
+
+  },
+  "links": {
+
+  },
+  "list": {
+    "S": "Share",
+    "A": "All",
+    "Q": "Q&A",
+    "R": "Recruitment",
+    "T": "Topic"
+  },
+  "mdisplay": {
+
+  },
+  "rank": {
+
+  },
+  "top": {
+
+  },
+  "markdown": {
+    "C": "Comment",
+    "P": "Preview",
+    "A": "Add your comment here"
+  }
+}

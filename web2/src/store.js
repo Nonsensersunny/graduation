@@ -1,22 +1,31 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {GuestHttp, UserHttp} from "@/assets/js/api";
+import {langs, i18n} from "./i18n";
 
 Vue.use(Vuex)
+
 
 export default new Vuex.Store({
   state: {
     isLogin: false,
     contents: [],
     rankeduser: [],
-    profile: {}
+    profile: {},
+    lang: "en",
+    langs: langs,
   },
   getters: {
     rankedUsers(state) { return state.rankeduser },
-    profile(state) { return state.profile }
+    profile(state) { return state.profile },
+    selectedLang(state) { return state.lang },
+    langs(state) { return state.langs }
   },
   mutations: {
-
+    selectLang(state, lang) {
+      state.lang = lang
+      i18n.locale = lang
+    }
   },
   actions: {
     async checkLoginStatus(context) {
@@ -61,6 +70,7 @@ export default new Vuex.Store({
       return await UserHttp.getTopContent()
     },
     async updateUserProfile(context, user) {
+      console.log(user)
       context.state.profile = await UserHttp.updateUserProfile(user)
     }
   }

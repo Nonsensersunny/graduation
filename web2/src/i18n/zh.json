@@ -1,0 +1,86 @@
+{
+  "common": {
+    "share": "分享",
+    "topic": "话题",
+    "home": "首页",
+    "votes": "投票",
+    "signin": "登录",
+    "login": "登录",
+    "author": "作者",
+    "views": "浏览",
+    "rank": "排行",
+    "top": "热门",
+    "dashboard": "个人面板",
+    "profile": "简介",
+    "books": "书籍",
+    "about": "关于",
+    "lang": "语言",
+    "category": "类型",
+    "title": "标题",
+    "more": "更多",
+    "links": "友情链接"
+  },
+  "about": {
+
+  },
+  "article": {
+    "T": "日期"
+  },
+  "ebook": {
+
+  },
+  "profile": {
+
+  },
+  "vote": {
+
+  },
+  "home": {
+
+  },
+  "signin": {
+
+  },
+  "writer": {
+
+  },
+  "content": {
+
+  },
+  "dashboard": {
+    "A": "All"
+  },
+  "detail": {
+
+  },
+  "footer": {
+    "A": "版权所有"
+  },
+  "header": {
+
+  },
+  "links": {
+
+  },
+  "list": {
+    "S": "分享",
+    "A": "全部",
+    "Q": "问答",
+    "R": "招聘",
+    "T": "话题"
+  },
+  "mdisplay": {
+
+  },
+  "rank": {
+
+  },
+  "top": {
+
+  },
+  "markdown": {
+    "C": "评论",
+    "P": "预览",
+    "A": "你的评论"
+  }
+}

@@ -2,8 +2,8 @@
     <div class="links">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>Links</span>
-                <el-button style="float: right; padding: 3px 0" type="text">MORE>></el-button>
+                <span>{{ $t('message.common.links') }}</span>
+                <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
             <div v-for="link in links" :key="link.id" class="text item">
                 {{ link }}

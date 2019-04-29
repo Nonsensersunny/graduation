@@ -2,7 +2,7 @@
     <div class="article">
         <div class="bread-nav">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/' }">{{ $t('message.common.home') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ content.category }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ content.title }}</el-breadcrumb-item>
             </el-breadcrumb>
@@ -11,10 +11,10 @@
             <div slot="header" class="clearfix">
                 <h2>{{ content.title }}</h2>
                 <div class="profile">
-                    <el-tag>Author:{{content.author}}</el-tag>
-                    <el-tag>Views:{{content.views}}</el-tag>
-                    <el-tag>Category:{{content.category}}</el-tag>
-                    <el-tag>Time:{{content.time | date}}</el-tag>
+                    <el-tag>{{ $t('message.common.author') }}:{{content.author}}</el-tag>
+                    <el-tag>{{ $t('message.common.views') }}:{{content.views}}</el-tag>
+                    <el-tag>{{ $t('message.common.category') }}:{{content.category}}</el-tag>
+                    <el-tag>{{ $t('message.article.T') }}:{{content.time | date}}</el-tag>
                 </div>
                 <el-tooltip class="item" effect="dark" content="Add to favorite" placement="bottom">
                     <i class="el-icon-star-off"  style="float: right; padding: 0px 3px"></i>

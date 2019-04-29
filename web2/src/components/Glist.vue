@@ -3,24 +3,24 @@
         <div v-for="content in contents" :key="content.id" @click="goDetail(content.category, content.id)">
             <el-row class="content-list-item" type="flex" :gutter="20">
                 <el-col :span="3">
-                    <el-tooltip class="item" effect="dark" :content="'Category: ' + content.category" placement="bottom">
+                    <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + content.category" placement="bottom">
                         <el-badge :value="content.is_key? 'HOT' : ''" class="item">
                             <el-tag type="info">{{ content.category }}</el-tag>
                         </el-badge>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="3">
-                    <el-tooltip class="item" effect="dark" :content="'Views: ' + content.views" placement="bottom">
+                    <el-tooltip class="item" effect="dark" :content="$t('message.common.views') + ' : ' + content.views" placement="bottom">
                         <i class="el-icon-view"> <span>{{ content.views }}</span></i>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="6">
-                    <el-tooltip class="item" effect="dark" :content="'Title: ' + content.title" placement="bottom">
+                    <el-tooltip class="item" effect="dark" :content="$t('message.common.title') + ' : ' + content.title" placement="bottom">
                         <span>{{ content.title }}</span>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="6">
-                    <el-tooltip class="item" effect="dark" :content="'Author: ' + content.author" placement="bottom">
+                    <el-tooltip class="item" effect="dark" :content="$t('message.common.author') + ' : ' + content.author" placement="bottom">
                         <span>{{ content.author }}</span>
                     </el-tooltip>
                 </el-col>

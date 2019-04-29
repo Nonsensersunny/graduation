@@ -2,8 +2,8 @@
     <div class="rank">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>Rank</span>
-                <el-button style="float: right; padding: 3px 0" type="text">MORE>></el-button>
+                <span>{{ $t('message.common.rank') }}</span>
+                <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
             <div v-for="(user, id) in rankedUsers" :key="user.id" class="rank-list text item" @click="$router.push(`/profile/${user.id}`)">
                 <span class="index">{{ id + 1 }}</span>

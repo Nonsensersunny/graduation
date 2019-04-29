@@ -217,7 +217,9 @@ func (app *App) GetUserProfileByName(c *gin.Context) {
 
 func (app *App) UpdateUserProfile(c *gin.Context) {
 	var user model.User
+	log.Info(user)
 	err := c.BindJSON(&user)
+	log.Info(err)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UPDATE_PROFILE_FAIL))
 		return

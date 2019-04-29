@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        &copy;2019 Zyven All rights reserved
+        &copy;{{ new Date().getFullYear() }} Zyven {{ $t('message.footer.A') }}
     </div>
 </template>
 
@@ -9,7 +9,7 @@
         name: 'HelloWorld',
         props: {
             msg: String
-        }
+        },
     }
 </script>
 

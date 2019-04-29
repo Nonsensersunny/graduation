@@ -1,6 +1,6 @@
 <template>
     <div class="signin">
-        <img alt="Vue logo" src="../assets/logo.png">
+<!--        <img alt="Vue logo" src="../assets/logo.png">-->
 <!--        <HelloWorld msg="Welcome to Your Vue.js App"/>-->
         <el-form :model="user">
             <el-form-item label="Username" required><el-input v-model="user.username"></el-input> </el-form-item>
@@ -50,7 +50,6 @@
                 try {
                     await this.$store.dispatch("userRegister", this.user);
                     this.$message.success("SIGNUP SUCCESS");
-                    this.$router.push("/");
                 } catch (e) {
                     console.log(e instanceof RespError)
                     if (e instanceof RespError) {

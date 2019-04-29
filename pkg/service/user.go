@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"graduation/internal/log"
 	"graduation/internal/utils"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/modules/mysql"
@@ -113,10 +114,12 @@ func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Topic").Count(&user.TopicNum)
 	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Q&A").Count(&user.QuestNum)
 	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Recruit").Count(&user.RecuiNum)
-	s.client.DB.Table("comments").Where("from = ?", id).Count(&user.CommeNum)
+	s.client.DB.Table("comments").Where("id = ?", id).Count(&user.CommeNum)
 	return
 }
 
 func (s *UserService) UpdateUserProfile(user model.User) error {
-	return s.client.DB.Table("users").Save(&user).Error
+	log.Info(user)
+	//s.client.DB.Table("users").Save()
+	return s.client.DB.Table("users").Omit("id", "time", "password", "salt", "avatar", "grades").Save(&user).Error
 }
