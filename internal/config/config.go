@@ -1,6 +1,7 @@
 package config
 
 import (
+	"gopkg.in/gomail.v2"
 	"gopkg.in/yaml.v3"
 	"graduation/internal/log"
 	"graduation/pkg/modules/influxdb"
@@ -39,11 +40,25 @@ type RedisConf struct {
 	DBName int `yaml:"dbName"`
 }
 
+type MailConf struct {
+	Host string `yaml:"host"`
+	Port int `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+}
+
+type AdminConf struct {
+	Mail []string `yaml:"mail"`
+	Tel []string `yaml:"tel"`
+}
+
 type ServerConf struct {
 	InfluxDB *InfluxDBConf `yaml:"influxdb"`
 	MySQLDB *MySQLConf `yaml:"mysql"`
 	RedisDB *RedisConf `yaml:"redis"`
 	Http     *HttpConf     `yaml:"http"`
+	Mail *MailConf `yaml:"mail"`
+	Admin *AdminConf `yaml:"admin"`
 }
 
 func (c *ServerConf) ErrHandler(op string, err error) {
@@ -67,6 +82,8 @@ var (
 	InfluxdbClient *influxdb.Client
 	MysqlClient *mysql.Client
 	RedisClient *redis.Client
+	MailDialer *gomail.Dialer
+	Administrator *AdminConf
 )
 
 func GetInfluxdbClient() *influxdb.Client {
@@ -79,6 +96,14 @@ func GetMySQLClient() *mysql.Client {
 
 func GetRedisClient() *redis.Client {
 	return RedisClient
+}
+
+func GetMailDialer() *gomail.Dialer {
+	return MailDialer
+}
+
+func GetAdmin() *AdminConf {
+	return Administrator
 }
 
 func InitInfluxdbClient(host string, port int, dbname, username, password string) error {
@@ -154,3 +179,15 @@ func InitDB(config ServerConf) {
 func InitScheme() {
 	mysql.MigrateTables(MysqlClient)
 }
+
+func InitMailClient(conf *MailConf) {
+	log.Infof("Trying connecting mail server:%s:%d %s", conf.Host, conf.Port, conf.Username)
+	MailDialer = &gomail.Dialer{
+		Host: conf.Host,
+		Port: conf.Port,
+		Username: conf.Username,
+		Password: conf.Password,
+		SSL: true,
+	}
+}
+

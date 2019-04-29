@@ -3,11 +3,11 @@
 <!--        <img alt="Vue logo" src="../assets/logo.png">-->
 <!--        <HelloWorld msg="Welcome to Your Vue.js App"/>-->
         <el-form :model="user">
-            <el-form-item label="Username" required><el-input v-model="user.username"></el-input> </el-form-item>
-            <el-form-item label="Password" required><el-input type="password" auto-complete="false" @keyup.enter.native="login" v-model="user.password"></el-input> </el-form-item>
+            <el-form-item :label="$t('message.signin.U')" required><el-input v-model="user.username"></el-input> </el-form-item>
+            <el-form-item :label="$t('message.signin.P')" required><el-input type="password" auto-complete="false" @keyup.enter.native="login" v-model="user.password"></el-input> </el-form-item>
         </el-form>
-        <el-button type="primary" @click="login">LOGIN</el-button>
-        <el-button type="info" @click="signup">SIGNUP</el-button>
+        <el-button type="primary" @click="login">{{ $t('message.signin.S') }}</el-button>
+        <el-button type="info" @click="signup">{{ $t('message.common.signup') }}</el-button>
     </div>
 </template>
 

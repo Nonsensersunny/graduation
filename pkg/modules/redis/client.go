@@ -43,3 +43,7 @@ func (c *Client) Get(key string) (string, error) {
 	}
 	return val, nil
 }
+
+func (c *Client) Del(keys... string) error {
+	return c.c.Del(keys...).Err()
+}

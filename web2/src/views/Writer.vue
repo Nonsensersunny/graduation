@@ -2,14 +2,14 @@
     <div class="writer">
         <div class="bread-nav">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
-                <el-breadcrumb-item>Writer</el-breadcrumb-item>
-            </el-breadcrumb>
+                <el-breadcrumb-item :to="{ path: '/' }">{{ $t('message.common.home') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('message.writer.W') }}</el-breadcrumb-item>
+                </el-breadcrumb>
         </div>
         <el-card class="box-card">
-            <el-input class="title" aria-required="true" v-model="title" placeholder="Title" label="Title"></el-input>
+            <el-input class="title" aria-required="true" v-model="title" :placeholder="$t('message.common.title')" label="Title"></el-input>
             <div class="category">
-                <el-select v-model="selectedCategory" clearable placeholder="Category" aria-label="Category">
+                <el-select v-model="selectedCategory" clearable :placeholder="$t('message.common.category')" aria-label="Category">
                     <el-option
                             v-for="item in category"
                             :key="item"
@@ -19,8 +19,8 @@
                 </el-select>
             </div>
             <mavon-editor v-model="content" />
-            <el-button @click="preview" type="primary">Preview</el-button>
-            <el-button @click="createContent" type="success">Submit</el-button>
+            <el-button @click="preview" type="primary">{{ $t('message.writer.P') }}</el-button>
+            <el-button @click="createContent" type="success">{{ $t('message.writer.S') }}</el-button>
         </el-card>
     </div>
 </template>

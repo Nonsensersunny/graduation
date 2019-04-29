@@ -54,6 +54,7 @@ func Init() (app App) {
 	log.Info("Initializing APP")
 	var sc config.ServerConf
 	serverConfig := sc.GetConfig()
+
 	app = App{
 		serverConfig: serverConfig,
 	}
@@ -62,6 +63,7 @@ func Init() (app App) {
 	app.userService = service.NewUserService(config.GetMySQLClient())
 	app.contentService = service.NewContentService(config.GetMySQLClient())
 	config.InitScheme()
+	config.InitMailClient(app.serverConfig.Mail)
 	return
 }
 
@@ -74,6 +76,7 @@ func (app *App) UserRegister(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.REGISTER_FAIL))
 		return
 	}
+	utils.SendMail("System Mail", user.Username + " trying registration", app.serverConfig.Admin.Mail...)
 	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
 }
 
@@ -105,6 +108,16 @@ func (app *App) UserLogin(c *gin.Context)  {
 		c.SetCookie("session_id", sessionId, 3600, "/", "", false, false)
 		c.JSON(http.StatusOK, RespHelper(SetData("data", info)))
 	}
+}
+
+func (app *App) UserLogout(c *gin.Context) {
+	username := c.Param("username")
+	err := config.RedisClient.Del(username + "-session_id")
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, ErrorHelper(err, utils.LOGOUT_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
 }
 
 func (app *App) CheckLoginStatus(c *gin.Context) {
@@ -272,6 +285,7 @@ func main() {
 		clientRouter.GET("/contents", app.GetTopContent)
 		clientRouter.GET("/rank", app.GetRankedUsers)
 		clientRouter.POST("/profile/update", app.UpdateUserProfile)
+		clientRouter.GET("/logout/:username", app.UserLogout)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

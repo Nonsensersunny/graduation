@@ -14,6 +14,7 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-menu-item>
+      <el-menu-item v-if="isLogin" @click="logout">{{ $t('message.common.logout') }}</el-menu-item>
     </el-menu>
     <router-view/>
   </div>
@@ -48,6 +49,9 @@
     methods: {
       selectLang(lang) {
         this.$store.commit("selectLang", lang);
+      },
+      logout() {
+        this.$store.dispatch("userLogout")
       }
     }
   }

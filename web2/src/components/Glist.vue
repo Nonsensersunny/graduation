@@ -4,7 +4,7 @@
             <el-row class="content-list-item" type="flex" :gutter="20">
                 <el-col :span="3">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + content.category" placement="bottom">
-                        <el-badge :value="content.is_key? 'HOT' : ''" class="item">
+                        <el-badge :value="content.is_key? $t('message.list.H') : ''" class="item">
                             <el-tag type="info">{{ content.category }}</el-tag>
                         </el-badge>
                     </el-tooltip>

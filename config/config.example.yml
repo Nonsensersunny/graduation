@@ -25,3 +25,16 @@ redis:
   username:
   password:
   dbName: 0
+
+mail:
+  host: smtp.exmail.qq.com
+  port: 465
+  username: zhaojuwen@deepin.com
+  password:
+
+admin:
+  mail:
+    - 1074687883@qq.com
+    - zyvenzhao@163.com
+  tel:
+    - 15871357810

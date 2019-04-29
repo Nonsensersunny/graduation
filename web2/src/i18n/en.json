@@ -5,6 +5,7 @@
     "home": "Home",
     "votes": "Votes",
     "signin": "Signin",
+    "signup": "SIGNUP",
     "login": "Login",
     "author": "Author",
     "views": "Views",
@@ -18,7 +19,8 @@
     "category": "Category",
     "title": "Title",
     "more": "MORE",
-    "links": "Links"
+    "links": "Links",
+    "logout": "LOGOUT"
   },
   "about": {
 
@@ -30,7 +32,11 @@
 
   },
   "profile": {
-
+    "U": "Username",
+    "S": "Sex",
+    "G": "Grades",
+    "D": "Description",
+    "M": "Mail"
   },
   "vote": {
 
@@ -39,10 +45,14 @@
 
   },
   "signin": {
-
+    "U": "Username",
+    "P": "Password",
+    "S": "SIGNIN"
   },
   "writer": {
-
+    "W": "Write",
+    "P": "Preview",
+    "S": "Submit"
   },
   "content": {
 
@@ -68,7 +78,8 @@
     "A": "All",
     "Q": "Q&A",
     "R": "Recruitment",
-    "T": "Topic"
+    "T": "Topic",
+    "H": "HOT"
   },
   "mdisplay": {
 

@@ -72,6 +72,9 @@ export const UserHttp = {
   async updateUserProfile(user) {
     let resp = await this.client.post("/profile/update", user);
     return resp.data.data["data"]
+  },
+  async userLogout(username) {
+    await this.client.get(`/logout/${username}`)
   }
 }
 

@@ -120,6 +120,5 @@ func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 
 func (s *UserService) UpdateUserProfile(user model.User) error {
 	log.Info(user)
-	//s.client.DB.Table("users").Save()
 	return s.client.DB.Table("users").Omit("id", "time", "password", "salt", "avatar", "grades").Save(&user).Error
 }

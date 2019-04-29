@@ -45,6 +45,11 @@ export default new Vuex.Store({
     async userRegister(context, playload) {
       await GuestHttp.signup(playload);
     },
+    async userLogout(context) {
+      await UserHttp.userLogout(context.state.profile.username)
+      context.state.isLogin = false
+      context.state.profile = {}
+    },
     async getProfileByName(context, username) {
       return await GuestHttp.getProfileByName(username);
     },

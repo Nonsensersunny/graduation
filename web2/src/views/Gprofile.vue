@@ -1,11 +1,18 @@
 <template>
     <div>
+        <div class="bread-nav">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+                <el-breadcrumb-item :to="{ path: '/' }">{{ $t('message.common.home') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('message.common.profile') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ profile.username }}</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
         <el-card class="box-card">
-            <div>Username:{{ profile.username }}</div>
+            <div>{{ $t('message.profile.U') }}:{{ profile.username }}</div>
             <i class="el-icon-male"></i><i class="el-icon-female"></i>
-            <div>Grades:{{ profile.grades }}</div>
-            <div>Mail:{{ profile.mail }}</div>
-            <div>Description:{{ profile.description }}</div>
+            <div>{{ $t('message.profile.G') }}:{{ profile.grades }}</div>
+            <div>{{ $t('message.profile.M') }}:{{ profile.mail }}</div>
+            <div>{{ $t('message.profile.D') }}:{{ profile.description }}</div>
         </el-card>
         <el-card class="box-card" v-if="canOperate">
             <el-input v-model="user.username" :placeholder="profile.username"></el-input>
@@ -148,5 +155,9 @@
     .el-menu-vertical-demo:not(.el-menu--collapse) {
         width: 100px;
         min-height: 400px;
+    }
+    .bread-nav {
+        background-color: #eee;
+        padding: 10px;
     }
 </style>

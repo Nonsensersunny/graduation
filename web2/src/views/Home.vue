@@ -5,9 +5,9 @@
     <el-container>
       <el-main><Gcontent :content="mockContent" /></el-main>
       <el-aside width="230px" class="side-board">
-        <Gdashboard activePath="share" />
-        <Grank />
-        <Gtop />
+        <Gdashboard activePath="share" v-if="isLogin" />
+        <Grank v-if="isLogin" />
+        <Gtop v-if="isLogin" />
         <Glinks />
       </el-aside>
     </el-container>
@@ -45,7 +45,9 @@ export default {
     }
   },
   computed: {
-
+    isLogin() {
+      return this.$store.state.isLogin
+    }
   }
 }
 </script>
