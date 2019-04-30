@@ -110,11 +110,17 @@ func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 	if err != nil {
 		return
 	}
-	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Share").Count(&user.ShareNum)
-	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Topic").Count(&user.TopicNum)
-	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Q&A").Count(&user.QuestNum)
-	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Recruit").Count(&user.RecuiNum)
-	s.client.DB.Table("comments").Where("id = ?", id).Count(&user.CommeNum)
+	var count int
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Share").Count(&count)
+	user.ShareNum = count
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Topic").Count(&count)
+	user.TopicNum= count
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Q&A").Count(&count)
+	user.QuestNum= count
+	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Recruit").Count(&count)
+	user.RecuiNum= count
+	s.client.DB.Table("comments").Where("id = ?", id).Count(&count)
+	user.CommeNum= count
 	return
 }
 

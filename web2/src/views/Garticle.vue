@@ -16,7 +16,7 @@
                     <el-tag>{{ $t('message.common.category') }}:{{content.category}}</el-tag>
                     <el-tag>{{ $t('message.article.T') }}:{{content.time | date}}</el-tag>
                 </div>
-                <el-tooltip class="item" effect="dark" content="Add to favorite" placement="bottom">
+                <el-tooltip v-if="content.author != $store.getters.profile.id" class="item" effect="dark" :content="$t('message.article.A')" placement="bottom">
                     <i class="el-icon-star-off"  style="float: right; padding: 0px 3px"></i>
                 </el-tooltip>
             </div>

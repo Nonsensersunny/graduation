@@ -5,8 +5,9 @@
                 <span>{{ $t('message.common.dashboard') }}</span>
                 <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
-            <p @click="$router.push(`/profile/${profile.id}`)">{{ profile.username }}</p>
-            <el-button @click="goWriter">Add {{ activePath }}</el-button>
+            <p @click="goSomeWhere(`/profile/${profile.id}`)">{{ profile.username }}</p>
+            <el-button @click="goSomeWhere('/writer')">{{ $t('message.dashboard.W') }}</el-button>
+            <el-button @click="goSomeWhere(`/profile/${profile.id}`)">{{ $t('message.dashboard.D') }}</el-button>
         </el-card>
     </div>
 </template>
@@ -18,8 +19,8 @@
             activePath: ""
         },
         methods: {
-            goWriter() {
-                this.$router.push('/writer')
+            goSomeWhere(path) {
+                this.$router.push(path)
             }
         },
         computed: {

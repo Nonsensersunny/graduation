@@ -27,7 +27,8 @@
 
   },
   "article": {
-    "T": "Time"
+    "T": "Time",
+    "A": "Add to favorite"
   },
   "ebook": {
 
@@ -37,7 +38,12 @@
     "S": "Sex",
     "G": "Grades",
     "D": "Description",
-    "M": "Mail"
+    "M": "Mail",
+    "CN": "Comments",
+    "QN": "Questions",
+    "SN": "Shares",
+    "TN": "Topics",
+    "RN": "Recruit"
   },
   "vote": {
 
@@ -59,7 +65,9 @@
 
   },
   "dashboard": {
-    "A ": "All"
+    "A ": "All",
+    "W": "Write",
+    "D": "Detail"
   },
   "detail": {
 

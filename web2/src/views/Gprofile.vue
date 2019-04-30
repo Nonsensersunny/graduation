@@ -13,6 +13,11 @@
             <div>{{ $t('message.profile.G') }}:{{ profile.grades }}</div>
             <div>{{ $t('message.profile.M') }}:{{ profile.mail }}</div>
             <div>{{ $t('message.profile.D') }}:{{ profile.description }}</div>
+            <div>{{ $t('message.profile.CN') }}:{{ profile.comme_num }}</div>
+            <div>{{ $t('message.profile.QN') }}:{{ profile.quest_num }}</div>
+            <div>{{ $t('message.profile.TN') }}:{{ profile.topic_num }}</div>
+            <div>{{ $t('message.profile.SN') }}:{{ profile.share_num }}</div>
+            <div>{{ $t('message.profile.RN') }}:{{ profile.recui_num }}</div>
         </el-card>
         <el-card class="box-card" v-if="canOperate">
             <el-input v-model="user.username" :placeholder="profile.username"></el-input>
