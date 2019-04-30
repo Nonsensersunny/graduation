@@ -12,6 +12,14 @@ import AV from 'leancloud-storage'
 import  {i18n} from "./i18n";
 
 
+router.beforeEach((to, from, next) => {
+  if (!store.state.isLogin && to.path != '/signin') {
+    ElementUI.Message.error(i18n.t("message.common.login_first"))
+    next()
+  }
+  next()
+})
+
 AV.init({
   appId: leancloud.APP_ID,
   appKey: leancloud.APP_KEY

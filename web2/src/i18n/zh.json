@@ -20,7 +20,8 @@
     "title": "标题",
     "more": "更多",
     "links": "友情链接",
-    "logout": "退出"
+    "logout": "退出",
+    "login_first": "用户尚未登录"
   },
   "about": {
 

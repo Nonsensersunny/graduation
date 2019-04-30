@@ -20,7 +20,8 @@
     "title": "Title",
     "more": "MORE",
     "links": "Links",
-    "logout": "LOGOUT"
+    "logout": "LOGOUT",
+    "login_first": "LOGIN FIRST"
   },
   "about": {
 
