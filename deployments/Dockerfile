@@ -1,2 +1,39 @@
-FROM centos
-WORKDIR
+FROM golang:1.12-stretch AS builder
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
+RUN apt-get update
+RUN apt-get install -y make
+RUN apt-get install -y git
+RUN apt-get install -y gcc libc-dev
+RUN apt-get install -y nodejs
+RUN apt-get install -y nginx
+RUN apt-get autoclean
+
+RUN echo "registry = http://registry.cnpmjs.org" > ~/.npmrc
+
+ENV PROJECT_PATH=/opt/gopath
+ENV GOPATH=${PROJECT_PATH}
+ENV PATH=${PROJECT_PATH}/bin:${PATH}
+
+ADD . ${PROJECT_PATH}
+WORKDIR ${PROJECT_PATH}
+COPY config/config.example.yml config/config.yml
+RUN make prepare
+RUN make run
+
+FROM golang:1.12-stretch
+
+RUN apt-get install -y ca-certificates
+RUN apt-get autoclean
+
+ENV PROJECT_PATH=/opt/gopath
+ENV GOPATH=${PROJECT_PATH}
+
+WORKDIR ${PROJECT_PATH}
+COPY --from=builder ${PROJECT_PATH}/server.tar.gz ${PROJECT_PATH}/server.tar.gz
+RUN mkdir /code
+RUN tar -xf ${PROJECT_PATH}/server.tar.gz  -C /code
+
+WORKDIR /code
+CMD ["/code/run.sh"]
+
