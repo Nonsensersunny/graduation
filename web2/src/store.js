@@ -14,12 +14,15 @@ export default new Vuex.Store({
     profile: {},
     lang: "en",
     langs: langs,
+    avatar: '',
+    cats: []
   },
   getters: {
     rankedUsers(state) { return state.rankeduser },
     profile(state) { return state.profile },
     selectedLang(state) { return state.lang },
-    langs(state) { return state.langs }
+    langs(state) { return state.langs },
+    categories(state) { return state.cats }
   },
   mutations: {
     selectLang(state, lang) {
@@ -75,8 +78,10 @@ export default new Vuex.Store({
       return await UserHttp.getTopContent()
     },
     async updateUserProfile(context, user) {
-      console.log(user)
       context.state.profile = await UserHttp.updateUserProfile(user)
+    },
+    async getCategories(context) {
+      context.state.cats = await GuestHttp.getCategories()
     }
   }
 })

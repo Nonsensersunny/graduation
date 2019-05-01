@@ -55,15 +55,12 @@ func (s *UserService) CreateUser(user model.User) error {
 }
 
 func (s *UserService) UpdateUserGrades(id int, cat string) error {
-	var add int
-	switch  {
-		case cat == model.SHARE: add = 5
-		case cat == model.QUESTION: add = 4
-		case cat == model.TOPIC: add = 3
-		case cat == model.RECRUIMENT: add = 2
-		default: add = 1
+	var weight int
+	err := s.client.DB.Table("categories").Select("weight").Where("name = ?", cat).Scan(&weight).Error
+	if err != nil {
+		return err
 	}
-	return s.client.DB.Table("users").Where("id = ?", id).Update("grades", gorm.Expr("grades + ?", add)).Error
+	return s.client.DB.Table("users").Where("id = ?", id).Update("grades", gorm.Expr("grades + ?", weight)).Error
 }
 
 type ReqUser struct {
@@ -125,6 +122,9 @@ func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 }
 
 func (s *UserService) UpdateUserProfile(user model.User) error {
-	log.Info(user)
-	return s.client.DB.Table("users").Omit("id", "time", "password", "salt", "avatar", "grades").Save(&user).Error
+	log.Infof("%#v", user)
+	err := s.client.DB.Table("users").Where("id = ?", user.Id).Updates(&user, true).Error
+	//err := s.client.DB.Table("users").Where("id = ?", user.Id).Updates(&user).Error
+	log.Infof("%#v", user)
+	return err
 }

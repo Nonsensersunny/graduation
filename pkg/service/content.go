@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"graduation/internal/log"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/modules/mysql"
 )
@@ -54,5 +55,11 @@ func (c *ContentService) ContentVisited(id int) error {
 
 func (c *ContentService) GetTopContent() (content []model.Content, err error) {
 	err = c.client.DB.Table("contents").Find(&content).Limit(5).Order("views DESC", true).Error
+	return
+}
+
+func (c *ContentService) GetCategories() (cats []model.Category, err error) {
+	err = c.client.DB.Table("categories").Find(&cats).Error
+	log.Info(cats)
 	return
 }

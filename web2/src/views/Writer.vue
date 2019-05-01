@@ -12,14 +12,13 @@
                 <el-select v-model="selectedCategory" clearable :placeholder="$t('message.common.category')" aria-label="Category">
                     <el-option
                             v-for="item in category"
-                            :key="item"
-                            :label="item"
-                            :value="item">
+                            :key="item.id"
+                            :label="$t('message.list.' + item.name)"
+                            :value="item.name">
                     </el-option>
                 </el-select>
             </div>
             <mavon-editor v-model="content" />
-            <el-button @click="preview" type="primary">{{ $t('message.writer.P') }}</el-button>
             <el-button @click="createContent" type="success">{{ $t('message.writer.S') }}</el-button>
         </el-card>
     </div>
@@ -44,10 +43,10 @@
                     let content = this.content
                     let resp = await this.$store.dispatch("createContent", {title, author, category, content})
                     if (resp === 'success') {
-                        this.$message.success("Create " + category + " success")
+                        this.$message.success(this.$t('message.writer.AS'))
                         this.$router.push('/')
                     } else {
-                        this.$message.info("Network busy, please try later")
+                        this.$message.info(this.$t('message.writer.AF'))
                     }
                 } catch (e) {
                     if (e instanceof RespError) {
@@ -66,7 +65,7 @@
         },
         computed: {
             category() {
-                return ['Share', 'Q&A', 'Topic', 'Vote', 'Recruit']
+                return this.$store.getters.categories
             }
         }
     }
@@ -86,5 +85,8 @@
     .bread-nav {
         background-color: #eee;
         padding: 10px;
+    }
+    .box-card *{
+        padding-bottom: 20px;
     }
 </style>

@@ -3,10 +3,9 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>{{ $t('message.common.links') }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
-            </div>
-            <div v-for="link in links" :key="link.id" class="text item">
-                {{ link }}
+                </div>
+            <div v-for="link in links" :key="link.id">
+                <el-link :href="link.href" target="_blank">{{ link.desc }}</el-link>
             </div>
         </el-card>
     </div>
@@ -16,8 +15,18 @@
     export default {
         name: 'HelloWorld',
         props: {
-            links: []
+
         },
+        data() {
+            return {
+                links: [
+                    {
+                        href: "nonsenser.top",
+                        desc: "disk"
+                    }
+                ]
+            }
+        }
     }
 </script>
 

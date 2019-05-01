@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-menu :default-active="activePath" router mode="horizontal">
+    <el-menu background-color="skyblue" text-color="#fff" active-text-color="gray" :default-active="activePath" router mode="horizontal">
       <el-menu-item index="/">{{ $t('message.common.home') }}</el-menu-item>
       <el-menu-item v-if="isLogin" index="/ebook">{{ $t('message.common.books') }}</el-menu-item>
       <el-menu-item v-if="isLogin" index="/vote">{{ $t('message.common.votes') }}</el-menu-item>
@@ -16,7 +16,7 @@
       </el-menu-item>
       <el-menu-item v-if="isLogin" @click="logout">{{ $t('message.common.logout') }}</el-menu-item>
     </el-menu>
-    <router-view/>
+    <router-view class="app-body" />
   </div>
 </template>
 <script>
@@ -52,26 +52,38 @@
       },
       logout() {
         this.$store.dispatch("userLogout")
+      },
+      async getCategories() {
+        await this.$store.dispatch("getCategories")
       }
+    },
+    created() {
+      this.getCategories()
     }
   }
 </script>
+
+
+
+
 <style lang="stylus">
-/*#app*/
+  /*#app*/
   /*font-family 'Avenir', Helvetica, Arial, sans-serif*/
   /*-webkit-font-smoothing antialiased*/
   /*-moz-osx-font-smoothing grayscale*/
   /*text-align center*/
   /*color #2c3e50*/
 
-/*#nav*/
+  /*#nav*/
   /*padding 30px*/
   /*a*/
-    /*font-weight bold*/
-    /*color #2c3e50*/
-    /*&.router-link-exact-active*/
-      /*color #42b983*/
+  /*font-weight bold*/
+  /*color #2c3e50*/
+  /*&.router-link-exact-active*/
+  /*color #42b983*/
   #app {
     margin: 0 100px 0 100px;
+    background-image: linear-gradient(#eef, #fff);
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   }
 </style>

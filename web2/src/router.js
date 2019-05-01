@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import store from "./store";
+import ElementUI from "element-ui";
+import {i18n} from "./i18n";
 
 Vue.use(Router)
 

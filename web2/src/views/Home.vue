@@ -28,7 +28,7 @@ import Gdashboard from '@/components/Gdashboard.vue';
 import Gfooter from '@/components/Gfooter.vue';
 
 export default {
-  name: 'home',
+  name: 'Home',
   components: {
     HelloWorld, Gcontent, Grank, Gtop, Glinks, Gdashboard, Gfooter
   },

@@ -14,6 +14,7 @@ type User struct {
 	Mail string `json:"mail"`
 	Sex int `json:"sex"`
 	Favorites []Favorite `json:"favorites"`
+	Role string `gorm:"default:'user'" json:"role"`
 }
 
 type Favorite struct {

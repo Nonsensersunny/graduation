@@ -7,29 +7,27 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
-import {leancloud} from "./assets/js/config";
-import AV from 'leancloud-storage'
-import  {i18n} from "./i18n";
-
-
-router.beforeEach((to, from, next) => {
-  if (!store.state.isLogin && to.path != '/signin') {
-    ElementUI.Message.error(i18n.t("message.common.login_first"))
-    next()
-  }
-  next()
-})
+import {i18n} from "./i18n"
+import AV from './assets/js/av'
+import {leancloud} from "@/assets/js/config"
 
 AV.init({
   appId: leancloud.APP_ID,
   appKey: leancloud.APP_KEY
 })
 
+router.beforeEach((to, from, next) => {
+  if (!store.state.isLogin && to.path != '/signin' && to.path != '/') {
+    ElementUI.Message.error(i18n.t("message.common.login_first"))
+    next()
+  }
+  next()
+})
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
-
 
 new Vue({
   router,

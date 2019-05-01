@@ -45,6 +45,10 @@ export const GuestHttp = {
     let resp = await this.client.get(`/profile/id/${id}`);
     return resp.data.data['data']
   },
+  async getCategories() {
+    let resp = await this.client.get('/cats');
+    return resp.data.data['data']
+  }
 }
 
 export const UserHttp = {

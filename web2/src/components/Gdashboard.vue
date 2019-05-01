@@ -5,9 +5,25 @@
                 <span>{{ $t('message.common.dashboard') }}</span>
                 <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
-            <p @click="goSomeWhere(`/profile/${profile.id}`)">{{ profile.username }}</p>
-            <el-button @click="goSomeWhere('/writer')">{{ $t('message.dashboard.W') }}</el-button>
-            <el-button @click="goSomeWhere(`/profile/${profile.id}`)">{{ $t('message.dashboard.D') }}</el-button>
+            <div class="card-body">
+                <el-image
+                        style="width: 100px; height: 100px"
+                        :src="profile.avatar"
+                        fit="fit">
+                    <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                    </div>
+                </el-image>
+                <p @click="goSomeWhere(`/profile/${profile.id}`)">{{ profile.username }}</p>
+                <div class="operation">
+                    <el-tooltip :content="$t('message.dashboard.W')" placement="bottom">
+                        <el-button circle icon="el-icon-document-add" @click="goSomeWhere('/writer')"></el-button>
+                    </el-tooltip>
+                    <el-tooltip :content="$t('message.dashboard.D')" placement="bottom">
+                        <el-button  circle icon="el-icon-user-solid" @click="goSomeWhere(`/profile/${profile.id}`)"></el-button>
+                    </el-tooltip>
+                </div>
+            </div>
         </el-card>
     </div>
 </template>
@@ -52,5 +68,12 @@
 
     .box-card {
         width: 200px;
+    }
+    .card-body {
+        text-align: center;
+    }
+    .operation {
+        /*display: flex;*/
+        margin: 0 auto;
     }
 </style>

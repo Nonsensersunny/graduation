@@ -203,6 +203,15 @@ func (app *App) GetContentByCat(c *gin.Context) {
 	c.JSON(http.StatusOK, RespHelper(SetData("data", content)))
 }
 
+func (app *App) GetCategories(c *gin.Context) {
+	cats, err := app.contentService.GetCategories();
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.FETCH_CATEGORY_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SetData("data", cats)))
+}
+
 func (app *App) GetUserProfileById(c *gin.Context) {
 	pathId := c.Param("id")
 	id, err := strconv.Atoi(pathId)
@@ -230,14 +239,11 @@ func (app *App) GetUserProfileByName(c *gin.Context) {
 
 func (app *App) UpdateUserProfile(c *gin.Context) {
 	var user model.User
-	log.Info(user)
 	err := c.BindJSON(&user)
-	log.Info(err)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UPDATE_PROFILE_FAIL))
 		return
 	}
-	log.Info(user)
 	err = app.userService.UpdateUserProfile(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UPDATE_PROFILE_FAIL))
@@ -270,6 +276,7 @@ func main() {
 		guestRouter.GET("/contents/:cat", app.GetContentByCat)
 		guestRouter.GET("/profile/id/:id", app.GetUserProfileById)
 		guestRouter.GET("/profile/username/:username", app.GetUserProfileByName)
+		guestRouter.GET("/cats", app.GetCategories)
 	}
 
 	clientRouter := r.Group("/u")
