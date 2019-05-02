@@ -2,7 +2,6 @@ PROGRAM=graduation
 
 prepare:
 	export GOPROXY=https://goproxy.io/
-	go mod vendor
 	cd web2; npm install
 
 build:
