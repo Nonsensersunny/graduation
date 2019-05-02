@@ -1,9 +1,6 @@
 PROGRAM=graduation
 TAG=1.0
 
-test:
-	@echo ${PWD}
-
 all: prepare build
 	@echo ${PROGRAM}
 
