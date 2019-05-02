@@ -12,6 +12,7 @@ prepare:
 run:
 	cd web2; npm run build
 	go run cmd/main.go
+	export GO111MODULE=on
 
 fast:
 	go run cmd/main.go
