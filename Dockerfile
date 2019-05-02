@@ -8,13 +8,15 @@ RUN apt-get install -y nginx
 ENV SERVER_PATH=/opt/server
 
 ADD dist ${SERVER_PATH}
+
+RUN pwd
+
 RUN ls ${SERVER_PATH}
 
-RUN mv ${SERVER_PATH}/dist/html /usr/share/nginx/
-
-WORKDIR ${SERVER_PATH}/dist
+WORKDIR ${SERVER_PATH}
 
 EXPOSE 80
 EXPOSE 8080
 
-ENTRYPOINT ./graduation
+CMD ["nginx", "start"]
+ENTRYPOINT ./dist/graduation

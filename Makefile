@@ -1,6 +1,9 @@
 PROGRAM=graduation
 TAG=1.0
 
+test:
+	@echo ${PWD}
+
 all: prepare build
 	@echo ${PROGRAM}
 
@@ -9,11 +12,13 @@ docker:
 	docker build .
 
 prepare:
-	export GOPROXY=https://goproxy.io/
+	export GOPATH=${PWD}
+	export PATH=${GOPATH}/bin;${PATH}
+	go mod vendor
 	cd web2; npm install
 
 build:
-	go build -o bin/${PROGRAM} cmd/main.go
+	go build -o bin/${PROGRAM} ${PROGRAM}/cmd
 	cd web2; npm run build
 	mkdir -p dist/html
 	cp bin/* dist
