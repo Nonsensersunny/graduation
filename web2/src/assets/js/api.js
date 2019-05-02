@@ -95,19 +95,6 @@ function errorHandler(e) {
     let error = new RespError(response.code, response.error, '')
     return Promise.reject(error)
   }
-
-  // let resp = e.response;
-  // if (resp.status >= 500) {
-  //   let error = new RespError(resp.status, ErrorCode.ServerError, '');
-  //   return Promise.reject(error);
-  // }
-  // let errorBody = resp.data.error;
-  // if (!errorBody || !errorBody.code) {
-  //   let error = new RespError(resp.status, ErrorCode.Undefined, resp.data);
-  //   return Promise.reject(error);
-  // }
-  // let error = new RespError(resp.status, errorBody.code, resp.msg);
-  // return Promise.reject(error);
 }
 
 GuestHttp.client.interceptors.response.use(resp => resp, errorHandler);

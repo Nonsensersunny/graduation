@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"graduation/internal/config"
-	"graduation/internal/log"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/modules/mysql"
 )
@@ -51,7 +50,6 @@ func (c *ContentService) GetContentById(id int) (content ReqContent, err error) 
 		return ReqContent{}, err
 	}
 	content.Comments = commments
-	log.Infof("%#v", content)
 	return
 }
 

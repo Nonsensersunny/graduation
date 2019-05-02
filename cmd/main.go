@@ -276,6 +276,7 @@ func (app *App) CreateComment(c *gin.Context) {
 
 func main() {
 	app := Init()
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	corsConfig := cors.DefaultConfig()
