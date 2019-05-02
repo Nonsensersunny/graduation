@@ -8,6 +8,7 @@ RUN apt-get install -y nginx
 ENV SERVER_PATH=/opt/server
 
 ADD dist ${SERVER_PATH}
+
 RUN ls ${SERVER_PATH}
 
 RUN mv ${SERVER_PATH}/dist/html /usr/share/nginx/
