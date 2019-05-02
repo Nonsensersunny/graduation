@@ -1,31 +1,31 @@
 PROGRAM=graduation
+TAG=1.0
+
+all: prepare build
+	@echo ${PROGRAM}
+
+
+docker:
+	docker build .
 
 prepare:
 	export GOPROXY=https://goproxy.io/
 	cd web2; npm install
 
 build:
-	go build -o bin/${PROGRAM} graduation/cmd
-
-run:
+	go build -o bin/${PROGRAM} cmd/main.go
 	cd web2; npm run build
-	go run cmd/main.go
-	export GO111MODULE=on
+	mkdir -p dist/html
+	cp bin/* dist
+	cp -r web2/dist/* dist/html
+	cp -r config dist
 
 fast:
 	go run cmd/main.go
 
-clean:
-	rm -rf ${PROGRAM}
+login:
+	docker login
 
-rebuild: clean build
-
-vue-run:
-	cd web2; npm run serve
-
-vue-clean:
-	rm -rf web/.nuxt/dist/
-	cp web/.nuxt/dist/client/* templates
-
-vue-build:
-	cd web; npm run build
+push: login build
+	docker build . -t ${PROGRAM}:${TAG}
+	docker push ${PROGRAM}:${TAG}

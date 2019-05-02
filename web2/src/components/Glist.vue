@@ -4,7 +4,7 @@
             <el-divider content-position="left">{{ new Date(content.time).toLocaleString($store.state.lang) }}</el-divider>
             <el-row class="content-list-item" type="flex" :gutter="20">
                 <el-col :span="3">
-                    <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + content.category" placement="bottom">
+                    <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + $t('message.list.' + content.category)" placement="bottom">
                         <el-badge :value="content.is_key? $t('message.list.H') : ''" class="item">
                             <el-tag type="info">{{ $t('message.list.' + content.category) }}</el-tag>
                         </el-badge>
