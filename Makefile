@@ -1,15 +1,13 @@
 PROGRAM=graduation
 
-.PHONY prepare build run
-
-build: 
-	go build -o bin/${PROGRAM} graduation/cmd
-
 prepare:
 	export GOPROXY=https://goproxy.io/
 	export GO111MODULE=auto
 	go mod vendor
 	cd web2; npm install
+
+build:
+	go build -o bin/${PROGRAM} graduation/cmd
 
 run:
 	cd web2; npm run build
