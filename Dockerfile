@@ -9,6 +9,8 @@ ENV SERVER_PATH=/opt/server
 
 ADD dist ${SERVER_PATH}
 
+RUN ls ${SERVER_PATH}
+
 RUN pwd
 
 RUN ls ${SERVER_PATH}
