@@ -6,9 +6,11 @@
                 <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
             <div v-for="(user, id) in rankedUsers" :key="user.id" class="rank-list text item" @click="$router.push(`/profile/${user.id}`)">
-                <span class="index">{{ id + 1 }}</span>
-                <span class="grades">{{ user.grades }}</span>
-                <span class="username">{{ user.username }}</span>
+                <el-link @click="$router.push('/profile/' + user.id)">
+                    <span class="index">{{ id + 1 }}</span>
+                    <span class="grades">{{ user.grades }}</span>
+                    <span class="username">{{ user.username }}</span>
+                </el-link>
             </div>
 
         </el-card>
@@ -68,7 +70,6 @@
     }
     .rank-list {
         width: 100%;
-        box-shadow: 0px 1px 1px 0px #eee;
         .index {
             margin-right: 15px;
             font-style: italic;

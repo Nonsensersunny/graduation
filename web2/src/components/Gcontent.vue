@@ -4,7 +4,7 @@
             <el-tab-pane :label="$t('message.list.All')">
                 <Glist category="All" />
             </el-tab-pane>
-            <el-tab-pane v-for="cat in cats" :label="$t('message.list.' + cat.name)">
+            <el-tab-pane v-for="cat in cats" :key="cat.id" :label="$t('message.list.' + cat.name)">
                 <Glist :category="cat.name" />
             </el-tab-pane>
             <!--<el-tab-pane :label="$t('message.list.Share')">-->

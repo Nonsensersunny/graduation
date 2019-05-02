@@ -42,3 +42,12 @@ export class User {
     this.sex = 0
   }
 }
+
+export class Comment {
+  constructor(from, to, cid, content) {
+    this.from = from
+    this.to = to
+    this.content = content
+    this.cid = cid
+  }
+}

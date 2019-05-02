@@ -19,7 +19,7 @@
                 </el-select>
             </div>
             <mavon-editor v-model="content" />
-            <el-button @click="createContent" type="success">{{ $t('message.writer.S') }}</el-button>
+            <el-link @click="createContent" type="primary" v-if="title != '' && selectedCategory != '' && content != ''">{{ $t('message.writer.S') }}</el-link>
         </el-card>
     </div>
 </template>

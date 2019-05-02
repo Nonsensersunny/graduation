@@ -55,12 +55,12 @@ func (s *UserService) CreateUser(user model.User) error {
 }
 
 func (s *UserService) UpdateUserGrades(id int, cat string) error {
-	var weight int
-	err := s.client.DB.Table("categories").Select("weight").Where("name = ?", cat).Scan(&weight).Error
+	var category model.Category
+	err := s.client.DB.Table("categories").Where("name = ?", cat).Scan(&category).Error
 	if err != nil {
 		return err
 	}
-	return s.client.DB.Table("users").Where("id = ?", id).Update("grades", gorm.Expr("grades + ?", weight)).Error
+	return s.client.DB.Table("users").Where("id = ?", id).Update("grades", gorm.Expr("grades + ?", category.Weight)).Error
 }
 
 type ReqUser struct {
@@ -124,7 +124,15 @@ func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 func (s *UserService) UpdateUserProfile(user model.User) error {
 	log.Infof("%#v", user)
 	err := s.client.DB.Table("users").Where("id = ?", user.Id).Updates(&user, true).Error
-	//err := s.client.DB.Table("users").Where("id = ?", user.Id).Updates(&user).Error
 	log.Infof("%#v", user)
 	return err
+}
+
+func (s *UserService) GetUsernameById(id int) (string, error) {
+	var user model.User
+	err := s.client.DB.Table("users").First(&user, id).Error
+	if err != nil {
+		return "", err
+	}
+	return user.Username, nil
 }

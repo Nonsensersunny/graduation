@@ -15,7 +15,7 @@
                         <i class="el-icon-view"><span>      {{ content.views }}</span></i>
                     </el-tooltip>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="8">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.title') + ' : ' + content.title" placement="bottom">
                         <span><i class="el-icon-document"></i> {{ content.title }}</span>
                     </el-tooltip>
@@ -25,7 +25,7 @@
                         <span><i class="el-icon-user"></i> {{ content.author }}</span>
                     </el-tooltip>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="4">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.comment') + ' : ' + content.author" placement="bottom">
                         <span><i class="el-icon-chat-dot-square"></i> {{ content.author }}</span>
                     </el-tooltip>

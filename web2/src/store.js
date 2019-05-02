@@ -82,6 +82,9 @@ export default new Vuex.Store({
     },
     async getCategories(context) {
       context.state.cats = await GuestHttp.getCategories()
+    },
+    async createComment(context, comment) {
+      return await UserHttp.createComment(comment)
     }
   }
 })

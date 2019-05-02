@@ -4,8 +4,6 @@ import {Message} from "element-ui";
 import {ErrorCode, RespError, Content} from "@/assets/js/type"
 import {server} from "@/assets/js/config";
 
-// axios.defaults.withCredentials = true;
-
 export const GuestHttp = {
   client: axios.create({
     baseURL: `http://${server.host}:${server.port}/g`,
@@ -22,8 +20,7 @@ export const GuestHttp = {
     let data = new FormData();
     data.set('username', user.username);
     data.set('password', user.password);
-    let res = await this.client.post('/register', user);
-    return res;
+    return await this.client.post('/register', user);
   },
   async getContentById(id) {
     let resp = await this.client.get(`/content/${id}`);
@@ -79,6 +76,10 @@ export const UserHttp = {
   },
   async userLogout(username) {
     await this.client.get(`/logout/${username}`)
+  },
+  async createComment(comment) {
+    let resp = await this.client.post("/comment", comment);
+    return resp.data.data["data"]
   }
 }
 
@@ -111,5 +112,3 @@ function errorHandler(e) {
 
 GuestHttp.client.interceptors.response.use(resp => resp, errorHandler);
 UserHttp.client.interceptors.response.use(resp => resp, errorHandler);
-// GuestHttp.client.request({withCredentials: true})
-// UserHttp.client.request({withCredentials: true})

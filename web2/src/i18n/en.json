@@ -1,5 +1,6 @@
 {
   "common": {
+    "UE": "Unknown error, please try later",
     "share": "Share",
     "topic": "Topic",
     "home": "Home",
@@ -29,7 +30,8 @@
   },
   "article": {
     "T": "Time",
-    "A": "Add to favorite"
+    "A": "Add to favorite",
+    "GCF": "Get content failed"
   },
   "ebook": {
 
@@ -123,6 +125,9 @@
   "markdown": {
     "C": "Comment",
     "P": "Preview",
-    "A": "Add your comment here"
+    "A": "Add your comment here",
+    "S": "Submit",
+    "CS": "Comment success",
+    "CF": "Comment failed"
   }
 }

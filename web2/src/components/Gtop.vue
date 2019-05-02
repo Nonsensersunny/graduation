@@ -6,8 +6,8 @@
                 <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
             </div>
             <div v-for="content in contents" :key="content.id" class="text item" @click="goDetail(content.category, content.id)">
-                <el-tag type="primary">{{ content.category }}</el-tag>
-                <span>{{ content.title }}</span>
+                <el-tag type="primary">{{ $t('message.list.' + content.category) }}</el-tag>
+                <span style="margin-left: 10px; overflow: hidden">{{ content.title }}</span>
             </div>
         </el-card>
     </div>

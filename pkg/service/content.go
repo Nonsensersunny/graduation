@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"graduation/internal/config"
 	"graduation/internal/log"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/modules/mysql"
@@ -27,8 +28,30 @@ func (c *ContentService) ValidateContent(content model.Content) error {
 	return nil
 }
 
-func (c *ContentService) GetContentById(id int) (content model.Content, err error) {
-	err = c.client.DB.Table("contents").Where("id = ?", id).Scan(&content).Error
+type ReqContent struct {
+	Content model.Content `json:"content"`
+	Writer ReqUser `json:"writer"`
+	Comments []model.Comment `json:"comments"`
+}
+
+func (c *ContentService) GetContentById(id int) (content ReqContent, err error) {
+	err = c.client.DB.Table("contents").Where("id = ?", id).Scan(&content.Content).Error
+	if err != nil {
+		return ReqContent{}, err
+	}
+	userService := NewUserService(config.GetMySQLClient())
+	writer, err := userService.GetUserProfileById(content.Content.Author)
+	if err != nil {
+		return ReqContent{}, err
+	}
+	content.Writer = writer
+	commentService := NewCommentService(config.GetMySQLClient())
+	commments, err := commentService.GetCommentsByCid(content.Content.Id)
+	if err != nil {
+		return ReqContent{}, err
+	}
+	content.Comments = commments
+	log.Infof("%#v", content)
 	return
 }
 
@@ -60,6 +83,5 @@ func (c *ContentService) GetTopContent() (content []model.Content, err error) {
 
 func (c *ContentService) GetCategories() (cats []model.Category, err error) {
 	err = c.client.DB.Table("categories").Find(&cats).Error
-	log.Info(cats)
 	return
 }

@@ -20,6 +20,7 @@ type App struct {
 	serverConfig *config.ServerConf
 	userService *service.UserService
 	contentService *service.ContentService
+	commentService *service.CommentService
 }
 
 func ErrorHelper(err error, statusCode int) gin.H {
@@ -62,6 +63,7 @@ func Init() (app App) {
 	config.InitDB(*serverConfig)
 	app.userService = service.NewUserService(config.GetMySQLClient())
 	app.contentService = service.NewContentService(config.GetMySQLClient())
+	app.commentService = service.NewCommentService(config.GetMySQLClient())
 	config.InitScheme()
 	config.InitMailClient(app.serverConfig.Mail)
 	return
@@ -257,6 +259,21 @@ func (app *App) UpdateUserProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, RespHelper(SetData("data", newUser)))
 }
 
+func (app *App) CreateComment(c *gin.Context) {
+	var comment model.Comment
+	err := c.BindJSON(&comment)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_COMMENT))
+		return
+	}
+	err = app.commentService.CreateComment(comment)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.CREATE_COMMENT_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SetData("data", "success")))
+}
+
 func main() {
 	app := Init()
 	r := gin.Default()
@@ -293,6 +310,7 @@ func main() {
 		clientRouter.GET("/rank", app.GetRankedUsers)
 		clientRouter.POST("/profile/update", app.UpdateUserProfile)
 		clientRouter.GET("/logout/:username", app.UserLogout)
+		clientRouter.POST("/comment", app.CreateComment)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

@@ -3,7 +3,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>{{ $t('message.common.dashboard') }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="goSomeWhere(`/profile/${profile.id}`)">{{ $t('message.common.more') }}>></el-button>
             </div>
             <div class="card-body">
                 <el-image

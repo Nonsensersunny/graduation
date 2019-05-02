@@ -1,7 +1,9 @@
 PROGRAM=graduation
 
+.PHONY prepare build run
+
 build: 
-	go build -o ${PROGRAM} graduation/cmd
+	go build -o bin/${PROGRAM} graduation/cmd
 
 prepare:
 	export GOPROXY=https://goproxy.io/
