@@ -14,6 +14,9 @@ prepare:
 	go mod vendor
 	cd web2; npm install
 
+go-build:
+	go build -o bin/${PROGRAM} ${PROGRAM}/cmd
+
 build:
 	go build -o bin/${PROGRAM} ${PROGRAM}/cmd
 	cd web2; npm run build

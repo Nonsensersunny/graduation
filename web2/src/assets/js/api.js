@@ -1,5 +1,4 @@
 import axios from "axios";
-import {Message} from "element-ui";
 
 import {ErrorCode, RespError, Content} from "@/assets/js/type"
 import {server} from "@/assets/js/config";
@@ -79,6 +78,30 @@ export const UserHttp = {
   },
   async createComment(comment) {
     let resp = await this.client.post("/comment", comment);
+    return resp.data.data["data"]
+  },
+  async userGetContentById(cid, uid) {
+    let resp = await this.client.get(`/content/${cid}/${uid}`);
+    return resp.data.data["data"]
+  },
+  async createFavorite(uid, cid) {
+    let resp = await this.client.get(`/fav/${uid}/${cid}`);
+    return resp.data.data["status"]
+  },
+  async deleteFavorite(uid, cid) {
+    let resp = await this.client.get(`/vaf/${uid}/${cid}`);
+    return resp.data.data["status"]
+  },
+  async createLink(link) {
+    let resp = await this.client.post("/link", link);
+    return resp.data.data["status"]
+  },
+  async deleteLink(id) {
+    let resp = await this.client.get(`/link/${id}`);
+    return resp.data.data["status"]
+  },
+  async getLinksByUserId(id) {
+    let resp = await this.client.get(`/links/${id}`);
     return resp.data.data["data"]
   }
 }

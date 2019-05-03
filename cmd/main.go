@@ -21,6 +21,8 @@ type App struct {
 	userService *service.UserService
 	contentService *service.ContentService
 	commentService *service.CommentService
+	favService *service.FavoriteService
+	linkService *service.LinkService
 }
 
 func ErrorHelper(err error, statusCode int) gin.H {
@@ -64,6 +66,8 @@ func Init() (app App) {
 	app.userService = service.NewUserService(config.GetMySQLClient())
 	app.contentService = service.NewContentService(config.GetMySQLClient())
 	app.commentService = service.NewCommentService(config.GetMySQLClient())
+	app.favService = service.NewFavService(config.GetMySQLClient())
+	app.linkService = service.NewLinkService(config.GetMySQLClient())
 	config.InitScheme()
 	config.InitMailClient(app.serverConfig.Mail)
 	return
@@ -274,9 +278,121 @@ func (app *App) CreateComment(c *gin.Context) {
 	c.JSON(http.StatusOK, RespHelper(SetData("data", "success")))
 }
 
+func (app *App) CreateFavorite(c *gin.Context) {
+	uid := c.Param("uid")
+	userId, err := strconv.Atoi(uid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	cid := c.Param("cid")
+	contentId, err := strconv.Atoi(cid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	err = app.favService.CreateFavorite(userId, contentId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.CREATE_FAVORITE_FAILED))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
+func (app *App) DeleteFavorite(c *gin.Context) {
+	uid := c.Param("uid")
+	userId, err := strconv.Atoi(uid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	cid := c.Param("cid")
+	contentId, err := strconv.Atoi(cid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	err = app.favService.DeleteFavorite(userId, contentId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.DELETE_FAVORITE_FAILED))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
+func (app *App) UserGetContentById(c *gin.Context) {
+	uid := c.Param("uid")
+	userId, err := strconv.Atoi(uid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	cid := c.Param("cid")
+	contentId, err := strconv.Atoi(cid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	content, err := app.contentService.UserGetContentById(contentId, userId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.FETCH_CONTENT_FAIL))
+		return
+	}
+	err = app.contentService.ContentVisited(contentId)
+	if err != nil {
+		log.Warningf("update content views found error:%v", err)
+	}
+	c.JSON(http.StatusOK, RespHelper(SetData("data", content)))
+}
+
+func (app *App) CreateLink(c *gin.Context) {
+	var link model.Link
+	err := c.BindJSON(&link)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_LINK))
+		return
+	}
+	err = app.linkService.CreateLink(link)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.CREATE_LINK_FAILED))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
+func (app *App) GetLinksByUserId(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	links, err := app.linkService.GetLinksByUserId(uid)
+	if err != nil {
+		c.JSON(http.StatusNoContent, ErrorHelper(err, utils.FETCH_LINKS_FAILED))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SetData("data", links)))
+}
+
+func (app *App) DeleteLink(c *gin.Context) {
+	id := c.Param("id")
+	lid, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	err = app.linkService.DeleteLink(lid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.DELETE_LINK_FAILED))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
 func main() {
 	app := Init()
-	gin.SetMode(gin.ReleaseMode)
+	//gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	corsConfig := cors.DefaultConfig()
@@ -312,6 +428,12 @@ func main() {
 		clientRouter.POST("/profile/update", app.UpdateUserProfile)
 		clientRouter.GET("/logout/:username", app.UserLogout)
 		clientRouter.POST("/comment", app.CreateComment)
+		clientRouter.GET("/fav/:uid/:cid", app.CreateFavorite)
+		clientRouter.GET("/vaf/:uid/:cid", app.DeleteFavorite)
+		clientRouter.GET("/content/:cid/:uid", app.UserGetContentById)
+		clientRouter.POST("/link", app.CreateLink)
+		clientRouter.GET("/link/:id", app.DeleteLink)
+		clientRouter.GET("/links/:id", app.GetLinksByUserId)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

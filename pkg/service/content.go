@@ -31,6 +31,7 @@ type ReqContent struct {
 	Content model.Content `json:"content"`
 	Writer ReqUser `json:"writer"`
 	Comments []model.Comment `json:"comments"`
+	Favorite bool `json:"favorite"`
 }
 
 func (c *ContentService) GetContentById(id int) (content ReqContent, err error) {
@@ -53,6 +54,32 @@ func (c *ContentService) GetContentById(id int) (content ReqContent, err error) 
 	return
 }
 
+func (c *ContentService) UserGetContentById(id, uid int) (content ReqContent, err error) {
+	err = c.client.DB.Table("contents").Where("id = ?", id).Scan(&content.Content).Error
+	if err != nil {
+		return ReqContent{}, err
+	}
+	userService := NewUserService(config.GetMySQLClient())
+	writer, err := userService.GetUserProfileById(content.Content.Author)
+	if err != nil {
+		return ReqContent{}, err
+	}
+	content.Writer = writer
+	commentService := NewCommentService(config.GetMySQLClient())
+	commments, err := commentService.GetCommentsByCid(content.Content.Id)
+	if err != nil {
+		return ReqContent{}, err
+	}
+	content.Comments = commments
+	favService := NewFavService(config.GetMySQLClient())
+	fav, err := favService.IsFavorite(uid, id)
+	if err != nil {
+		return ReqContent{}, err
+	}
+	content.Favorite = fav
+	return
+}
+
 func (c *ContentService) CreateContent(content model.Content) error {
 	if content.Title == "" || content.Content == "" {
 		return errors.New("title and content show not be empty")
@@ -61,7 +88,7 @@ func (c *ContentService) CreateContent(content model.Content) error {
 }
 
 func (c *ContentService) GetRankedContent() (content []model.Content, err error) {
-	err = c.client.DB.Table("contents").Find(&content).Order("views DESC", true).Error
+	err = c.client.DB.Table("contents").Find(&content).Order("time desc", true).Error
 	return
 }
 

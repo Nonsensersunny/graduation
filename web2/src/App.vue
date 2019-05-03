@@ -52,6 +52,7 @@
       },
       logout() {
         this.$store.dispatch("userLogout")
+        this.$router.push("/signin")
       },
       async getCategories() {
         await this.$store.dispatch("getCategories")
@@ -82,7 +83,7 @@
   /*&.router-link-exact-active*/
   /*color #42b983*/
   #app {
-    margin: 0 100px 0 100px;
+    margin: 0 10% 0 10%;
     background-image: linear-gradient(#eef, #fff);
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   }

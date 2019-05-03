@@ -31,7 +31,10 @@
   "article": {
     "T": "Time",
     "A": "Add to favorite",
-    "GCF": "Get content failed"
+    "C": "Cancel favorite",
+    "GCF": "Get content failed",
+    "OS": "Operation success",
+    "OF": "Operation failed"
   },
   "ebook": {
 
@@ -102,7 +105,12 @@
 
   },
   "links": {
-
+    "LD": "Link deleted",
+    "LDF": "Link delete failed",
+    "A": "Add link",
+    "LN": "Name",
+    "LA": "Addr",
+    "ALF": "Add link failed"
   },
   "list": {
     "Share": "Share",

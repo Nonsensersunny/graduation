@@ -85,6 +85,24 @@ export default new Vuex.Store({
     },
     async createComment(context, comment) {
       return await UserHttp.createComment(comment)
+    },
+    async userGetContentById(context, {cid, uid}) {
+      return await UserHttp.userGetContentById(cid, uid)
+    },
+    async createFavorite(context, {uid, cid}) {
+      return await UserHttp.createFavorite(uid, cid)
+    },
+    async deleteFavorite(context, {uid, cid}) {
+      return await UserHttp.deleteFavorite(uid, cid)
+    },
+    async createLink(context, link) {
+      return await UserHttp.createLink(link)
+    },
+    async deleteLink(context, id) {
+      return await UserHttp.deleteLink(id)
+    },
+    async getLinksByUserId(context, id) {
+      return await UserHttp.getLinksByUserId(id)
     }
   }
 })

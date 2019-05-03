@@ -24,8 +24,8 @@
                         <span><i class="el-icon-watch"></i>{{ new Date(content.time).toLocaleString($store.state.lang) }}</span>
                     </el-tooltip>
                 </div>
-                <el-tooltip v-if="content.author != $store.getters.profile.id" class="item" effect="dark" :content="$t('message.article.A')" placement="bottom">
-                    <i class="el-icon-star-off"  style="float: right; padding: 0px 3px"></i>
+                <el-tooltip v-if="content.author != $store.getters.profile.id && isLogin" class="item" effect="dark" :content="favorite? $t('message.article.C') : $t('message.article.A')" placement="bottom">
+                    <i :class="favorite? 'el-icon-star-on' : 'el-icon-star-off'"  style="float: right; padding: 0px 3px" @click="toggleFavorite"></i>
                 </el-tooltip>
             </div>
             <Gmdisplay :content="content.content" v-if="content" />
@@ -61,16 +61,25 @@
             return {
                 content: {},
                 comments: [],
-                writer: {}
+                writer: {},
+                favorite: false,
             }
         },
         methods: {
             async fetchContent(id) {
                 try {
-                    let resp = await this.$store.dispatch("getContentById", id);
+                    let resp;
+                    if (this.isLogin) {
+                        let uid = this.$store.getters.profile.id
+                        let cid = id
+                        resp = await this.$store.dispatch("userGetContentById", {cid, uid})
+                    } else {
+                        resp = await this.$store.dispatch("getContentById", id);
+                    }
                     this.content = resp.content
                     this.comments = resp.comments
                     this.writer = resp.writer
+                    this.favorite = resp.favorite
                 } catch (e) {
                     if (e instanceof RespError) {
                         this.$message.error(this.$t('message.common.UE'))
@@ -78,6 +87,26 @@
                 }
 
             },
+            async toggleFavorite() {
+                let uid = this.$store.getters.profile.id
+                let cid = this.content.id
+                let resp;
+                if (this.favorite) {
+                    resp = await this.$store.dispatch("deleteFavorite", {uid, cid})
+                } else {
+                    resp = await this.$store.dispatch("createFavorite", {uid, cid})
+                }
+                if (resp == 'success') {
+                    this.favorite = ! this.favorite
+                    this.$notify.info({
+                        message: this.$t("message.article.OS")
+                    })
+                } else {
+                    this.$notify.error({
+                        message: this.$t("message.article.OF")
+                    })
+                }
+            }
         },
         computed: {
             category() {

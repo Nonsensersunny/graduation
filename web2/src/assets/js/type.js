@@ -51,3 +51,11 @@ export class Comment {
     this.cid = cid
   }
 }
+
+export class Link {
+  constructor(uid, name, href) {
+    this.uid = uid
+    this.name = name
+    this.href = href
+  }
+}

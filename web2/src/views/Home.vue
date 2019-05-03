@@ -2,12 +2,13 @@
   <div class="home">
     <!--<img alt="Vue logo" src="../assets/logo.png">-->
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-    <el-container>
+    <Gcontent :content="mockContent" v-if="!isLogin" class="main-content" />
+    <el-container v-else>
       <el-main><Gcontent :content="mockContent" /></el-main>
       <el-aside width="230px" class="side-board">
-        <Gdashboard activePath="share" v-if="isLogin" />
-        <Grank v-if="isLogin" />
-        <Gtop v-if="isLogin" />
+        <Gdashboard activePath="share" />
+        <Grank />
+        <Gtop />
         <Glinks />
       </el-aside>
     </el-container>
@@ -58,5 +59,8 @@ export default {
   .side-board * {
     margin-top: 10px;
     padding: 10px 0 10px 0;
+  }
+  .main-content {
+    margin: 5px 5px 20px 5px;
   }
 </style>

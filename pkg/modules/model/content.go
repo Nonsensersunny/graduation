@@ -28,3 +28,10 @@ type Category struct {
 	Alias string `json:"alias"`
 	Weight int `json:"weight"`
 }
+
+type Link struct {
+	Id int `json:"id"`
+	Uid int `json:"uid"`
+	Name string `json:"name"`
+	Href string `json:"href"`
+}

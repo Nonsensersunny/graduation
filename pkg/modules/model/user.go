@@ -21,4 +21,5 @@ type Favorite struct {
 	Id int `gorm:"primary_key" json:"id"`
 	Uid int `json:"uid"`
 	Cid int `json:"cid"`
+	Valid bool `json:"valid"`
 }
