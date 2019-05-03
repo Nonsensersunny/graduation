@@ -110,3 +110,8 @@ func (c *ContentService) GetCategories() (cats []model.Category, err error) {
 	err = c.client.DB.Table("categories").Find(&cats).Error
 	return
 }
+
+func (c *ContentService) CreateCategory(cat model.Category) (err error) {
+	err = c.client.DB.Table("categories").Create(&cat).Error
+	return
+}

@@ -120,5 +120,17 @@ function errorHandler(e) {
   }
 }
 
+export const AdminHttp = {
+  client: axios.create({
+    baseURL: `http://${server.host}:${server.port}/a`,
+    withCredentials:true
+  }),
+  async createCategory(category) {
+    let resp = await this.client.post("/category", category);
+    return resp.data.data['status']
+  }
+}
+
 GuestHttp.client.interceptors.response.use(resp => resp, errorHandler);
 UserHttp.client.interceptors.response.use(resp => resp, errorHandler);
+AdminHttp.client.interceptors.response.use(resp => resp, errorHandler);

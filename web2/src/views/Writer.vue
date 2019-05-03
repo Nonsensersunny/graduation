@@ -13,7 +13,7 @@
                     <el-option
                             v-for="item in category"
                             :key="item.id"
-                            :label="$t('message.list.' + item.name)"
+                            :label="$store.state.lang == 'en'? item.name : item.alias"
                             :value="item.name">
                     </el-option>
                 </el-select>

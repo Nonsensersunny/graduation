@@ -72,6 +72,7 @@ type ReqUser struct {
 	Description string `json:"description"`
 	Mail string `json:"mail"`
 	Sex int `json:"sex"`
+	Role string `json:"role"`
 
 	ShareNum int `json:"share_num"`
 	TopicNum int `json:"topic_num"`

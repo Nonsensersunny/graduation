@@ -390,6 +390,22 @@ func (app *App) DeleteLink(c *gin.Context) {
 	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
 }
 
+func (app *App) CreateCategory(c *gin.Context) {
+	var cat model.Category
+	err := c.BindJSON(&cat)
+	log.Infof("%#v", cat)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_FORM_PARAMETER))
+		return
+	}
+	err = app.contentService.CreateCategory(cat)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.CREATE_CATEGORY_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
 func main() {
 	app := Init()
 	//gin.SetMode(gin.ReleaseMode)
@@ -416,11 +432,6 @@ func main() {
 	clientRouter := r.Group("/u")
 	clientRouter.Use(middleware.Auth())
 	{
-		clientRouter.POST("/test", func(context *gin.Context) {
-			context.JSON(200, gin.H{
-				"message": "still",
-			})
-		})
 		clientRouter.POST("/content", app.CreateContent)
 		clientRouter.GET("/status", app.CheckLoginStatus)
 		clientRouter.GET("/contents", app.GetTopContent)
@@ -434,6 +445,13 @@ func main() {
 		clientRouter.POST("/link", app.CreateLink)
 		clientRouter.GET("/link/:id", app.DeleteLink)
 		clientRouter.GET("/links/:id", app.GetLinksByUserId)
+	}
+
+	adminRouter := r.Group("/a")
+	adminRouter.Use(middleware.Auth())
+	adminRouter.Use(middleware.AdminAuth())
+	{
+		adminRouter.POST("/category", app.CreateCategory)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

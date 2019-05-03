@@ -83,7 +83,6 @@
         },
         created() {
             this.getUserLinks();
-            console.log(this.link)
         }
     }
 </script>

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {GuestHttp, UserHttp} from "@/assets/js/api";
+import {GuestHttp, UserHttp, AdminHttp} from "@/assets/js/api";
 import {langs, i18n} from "./i18n";
 
 Vue.use(Vuex)
@@ -103,6 +103,9 @@ export default new Vuex.Store({
     },
     async getLinksByUserId(context, id) {
       return await UserHttp.getLinksByUserId(id)
+    },
+    async createCategory(context, category) {
+      return await AdminHttp.createCategory(category)
     }
   }
 })

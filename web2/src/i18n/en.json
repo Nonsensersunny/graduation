@@ -86,7 +86,11 @@
     "AF": "Add content failed, try later"
   },
   "content": {
-
+    "CCF": "Create category failed",
+    "CCS": "Create category succeed",
+    "N": "Name",
+    "A": "Alias",
+    "W": "Weight"
   },
   "dashboard": {
     "A ": "All",

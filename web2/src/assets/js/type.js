@@ -59,3 +59,12 @@ export class Link {
     this.href = href
   }
 }
+
+export class Category {
+  constructor(name, creator, alias, weight) {
+    this.name = name
+    this.creator = creator
+    this.alias = alias
+    this.weight = weight
+  }
+}
