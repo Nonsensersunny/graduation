@@ -117,7 +117,7 @@ func (s *UserService) GetUserProfileById(id int) (user ReqUser, err error) {
 	user.QuestNum= count
 	s.client.DB.Table("contents").Where("author = ? and category = ?", id, "Recruit").Count(&count)
 	user.RecuiNum= count
-	s.client.DB.Table("comments").Where("id = ?", id).Count(&count)
+	s.client.DB.Table("comments").Where("`from` = ?", id).Count(&count)
 	user.CommeNum= count
 	return
 }

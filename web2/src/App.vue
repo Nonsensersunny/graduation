@@ -2,8 +2,7 @@
   <div id="app">
     <el-menu background-color="skyblue" text-color="#fff" active-text-color="gray" :default-active="activePath" router mode="horizontal">
       <el-menu-item index="/">{{ $t('message.common.home') }}</el-menu-item>
-      <el-menu-item v-if="isLogin" index="/ebook">{{ $t('message.common.books') }}</el-menu-item>
-      <el-menu-item v-if="isLogin" index="/vote">{{ $t('message.common.votes') }}</el-menu-item>
+      <!--<el-menu-item v-if="isLogin" index="/vote">{{ $t('message.common.votes') }}</el-menu-item>-->
       <el-menu-item v-if="isLogin" index="/about">{{ $t('message.common.about') }}</el-menu-item>
       <el-menu-item v-if="!isLogin" index="/signin">{{ $t('message.common.signin') }}</el-menu-item>
       <el-menu-item>

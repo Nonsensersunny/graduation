@@ -16,10 +16,8 @@ export const GuestHttp = {
     return res.data.data["data"];
   },
   async signup(user) {
-    let data = new FormData();
-    data.set('username', user.username);
-    data.set('password', user.password);
-    return await this.client.post('/register', user);
+    let resp = await this.client.post('/register', user);
+    return resp.data.data["status"]
   },
   async getContentById(id) {
     let resp = await this.client.get(`/content/${id}`);
@@ -44,6 +42,10 @@ export const GuestHttp = {
   async getCategories() {
     let resp = await this.client.get('/cats');
     return resp.data.data['data']
+  },
+  async getAuthMail(user) {
+    let resp = await this.client.post('/auth/mail', user);
+    return resp.data.data["status"]
   }
 }
 
@@ -103,6 +105,17 @@ export const UserHttp = {
   async getLinksByUserId(id) {
     let resp = await this.client.get(`/links/${id}`);
     return resp.data.data["data"]
+  },
+    getWSAddr() {
+      return `${this.client.baseURL}/ws`
+    },
+  async getCommentsByUid(id) {
+    let resp = await this.client.get(`/comment/u/${id}`);
+    return resp.data.data["data"]
+  },
+  async delCommentById(id) {
+    let resp = await this.client.get(`/comment/delete/${id}`);
+    return resp.data.data["status"]
   }
 }
 
@@ -127,6 +140,10 @@ export const AdminHttp = {
   }),
   async createCategory(category) {
     let resp = await this.client.post("/category", category);
+    return resp.data.data['status']
+  },
+  async toggleKeyContent(id) {
+    let resp = await this.client.get(`/content/${id}/toggle`);
     return resp.data.data['status']
   }
 }

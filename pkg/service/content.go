@@ -102,7 +102,7 @@ func (c *ContentService) ContentVisited(id int) error {
 }
 
 func (c *ContentService) GetTopContent() (content []model.Content, err error) {
-	err = c.client.DB.Table("contents").Find(&content).Limit(5).Order("views DESC", true).Error
+	err = c.client.DB.Table("contents").Where("is_key = ?", true).Scan(&content).Limit(5).Order("views DESC", true).Error
 	return
 }
 
@@ -113,5 +113,15 @@ func (c *ContentService) GetCategories() (cats []model.Category, err error) {
 
 func (c *ContentService) CreateCategory(cat model.Category) (err error) {
 	err = c.client.DB.Table("categories").Create(&cat).Error
+	return
+}
+
+func (c *ContentService) ToggleKeyContent(id int) (err error) {
+	var content model.Content
+	err = c.client.DB.Table("contents").Where("id = ?", id).Scan(&content).Error
+	if err != nil {
+		return
+	}
+	err = c.client.DB.Table("contents").Where("id = ?", id).Update("is_key", (!content.IsKey)).Error
 	return
 }

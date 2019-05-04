@@ -39,12 +39,49 @@
                 <el-row class="right-panel-items" :gutter="20">
                     <el-col :span="8">
                         <el-card shadow="hover">
-                            <div>{{ $t('message.profile.G') }}:{{ profile.grades }}</div>
+                            <el-popover
+                                    placement="right"
+                                    width="350"
+                                    trigger="click">
+                                <el-table :data="$store.getters.categories">
+                                    <el-table-column width="150" property="Id" label="ID"></el-table-column>
+                                    <el-table-column width="100" :property="$store.state.lang == 'en'? 'name' : 'alias'" :label="$t('message.profile.N')"></el-table-column>
+                                    <el-table-column width="300" property="weight" :label="$t('message.profile.W')"></el-table-column>
+                                </el-table>
+                                <div slot="reference">{{ $t('message.profile.G') }}:{{ profile.grades }}</div>
+                            </el-popover>
                         </el-card>
                     </el-col>
                     <el-col :span="8">
                         <el-card shadow="hover">
-                            <div>{{ $t('message.profile.CN') }}:{{ profile.comme_num }}</div>
+                            <el-popover
+                                    placement="right"
+                                    width="400"
+                                    trigger="click">
+                                <el-table :data="comments">
+                                    <el-table-column width="200" :label="$t('message.profile.T')">
+                                        <template slot-scope="scope">
+                                            {{ new Date(scope.row.time).toLocaleString($store.state.lang) }}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column width="300" property="content" :label="$t('message.profile.CC')"></el-table-column>
+                                    <el-table-column
+                                            v-if="id == $store.getters.profile.id"
+                                            fixed="right"
+                                            :label="$t('message.profile.OP')"
+                                            width="120">
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    @click.native.prevent="delCommentById(scope.row.id)"
+                                                    type="text"
+                                                    size="small">
+                                                {{ $t('message.profile.DC') }}
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                                <div slot="reference" @click="getCommentsByUid">{{ $t('message.profile.CN') }}:{{ profile.comme_num }}</div>
+                            </el-popover>
                         </el-card>
                     </el-col>
                     <el-col :span="8">
@@ -123,7 +160,8 @@
                     checkPass: '',
                     age: ''
                 },
-                img_file: ''
+                img_file: '',
+                comments: []
             };
         },
         computed: {
@@ -233,6 +271,23 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            async getCommentsByUid() {
+                let id = this.id
+                this.comments = await this.$store.dispatch("getCommentsByUid", id)
+            },
+            async delCommentById(id) {
+                let resp = await this.$store.dispatch("delCommentById", id);
+                if (resp == 'success') {
+                    await this.getCommentsByUid()
+                    this.$notify.info({
+                        message: "Success"
+                    })
+                } else {
+                    this.$notify.error({
+                        message: "failure"
+                    })
+                }
             }
         },
         created() {

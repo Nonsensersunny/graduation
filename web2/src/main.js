@@ -10,6 +10,7 @@ import 'mavon-editor/dist/css/index.css'
 import {i18n} from "./i18n"
 import AV from './assets/js/av'
 import {leancloud} from "@/assets/js/config"
+import VueSocketIO from 'vue-socket.io'
 
 AV.init({
   appId: leancloud.APP_ID,
@@ -28,6 +29,18 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: 'http://127.0.0.1:8100',
+//   vuex: {
+//     store,
+//     actionPrefix: 'SOCKET_',
+//     mutaionPrefix: 'SOCKET_'
+//   },
+//   options: {
+//     // path: '/u/ws'
+//   }
+// }))
 
 new Vue({
   router,

@@ -3,7 +3,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>{{ $t('message.common.top') }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>
+                <!--<el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>-->
             </div>
             <div v-for="content in contents" :key="content.id" class="text item" @click="goDetail(content.category, content.id)">
                 <el-tag type="primary">{{ $t('message.list.' + content.category) }}</el-tag>

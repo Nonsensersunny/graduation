@@ -1,12 +1,17 @@
 <template>
     <div class="list">
-        <div v-for="(content, index) in contents" :key="content.id" @click="goDetail(content.category, content.id)">
+        <div v-for="(content, index) in contents" :key="content.id">
             <el-divider content-position="left">{{ new Date(content.time).toLocaleString($store.state.lang) }}</el-divider>
             <el-row class="content-list-item" type="flex" :gutter="20">
+                <el-col :span="1" v-if="$store.getters.profile.role == 'admin'">
+                    <el-tooltip :content="content.is_key? $t('message.list.CH') : $t('message.list.PH')" placement="bottom">
+                        <i :class="content.is_key? 'el-icon-lock' : 'el-icon-unlock'" @click="toggleKeyContent(content.id)"></i>
+                    </el-tooltip>
+                </el-col>
                 <el-col :span="3">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + $t('message.list.' + content.category)" placement="bottom">
                         <el-badge :value="content.is_key? $t('message.list.H') : ''" class="item">
-                            <el-tag type="info">{{ $t('message.list.' + content.category) }}</el-tag>
+                            <el-tag style="position: relative; bottom: 8px;" type="info">{{ $t('message.list.' + content.category) }}</el-tag>
                         </el-badge>
                     </el-tooltip>
                 </el-col>
@@ -17,7 +22,7 @@
                 </el-col>
                 <el-col :span="8">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.title') + ' : ' + content.title" placement="bottom">
-                        <span><i class="el-icon-document"></i> {{ content.title }}</span>
+                        <span  @click="goDetail(content.category, content.id)"><i class="el-icon-document"></i> {{ content.title }}</span>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="6">
@@ -25,7 +30,7 @@
                         <span><i class="el-icon-user"></i> {{ content.author }}</span>
                     </el-tooltip>
                 </el-col>
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.comment') + ' : ' + content.author" placement="bottom">
                         <span><i class="el-icon-chat-dot-square"></i> {{ content.author }}</span>
                     </el-tooltip>
@@ -65,6 +70,19 @@
           },
             goDetail(cat, id) {
               this.$router.push(`/content/${cat}/${id}`)
+            },
+            async toggleKeyContent(id) {
+                let resp = await this.$store.dispatch("toggleKeyContent", id);
+                if (resp == 'success') {
+                    await this.getContentByCat(this.category)
+                    this.$notify.info({
+                        message: this.$t("message.list.OS")
+                    })
+                } else {
+                    this.$notify.error({
+                        message: this.$t("message.list.OF")
+                    })
+                }
             }
         },
         created() {

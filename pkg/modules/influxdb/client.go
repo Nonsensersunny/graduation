@@ -19,7 +19,7 @@ type Client struct {
 	c client.Client
 }
 
-func (c *Client) write(ps ...*client.Point) error {
+func (c *Client) Write(ps ...*client.Point) error {
 	bp, err := client.NewBatchPoints(client.BatchPointsConfig{
 		Database: c.DbName,
 	})

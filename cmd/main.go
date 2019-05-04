@@ -4,16 +4,19 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/influxdata/influxdb/uuid"
 	"graduation/internal/config"
 	"graduation/internal/log"
 	"graduation/internal/middleware"
 	"graduation/internal/utils"
+	"graduation/internal/ws"
 	"graduation/pkg/modules/model"
 	"graduation/pkg/service"
 	"net/http"
 	"strconv"
 	"time"
+	wsid "github.com/satori/go.uuid"
 )
 
 type App struct {
@@ -73,11 +76,34 @@ func Init() (app App) {
 	return
 }
 
+type RegUser struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	AuthCode string `json:"authCode"`
+}
+
 func (app *App) UserRegister(c *gin.Context) {
-	var user model.User
-	c.BindJSON(&user)
-	log.Info(user)
-	err := app.userService.CreateUser(user)
+	var user RegUser
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_FORM_PARAMETER))
+		return
+	}
+	redisAuth, _ := config.GetRedisClient().Get(user.Username + "_auth")
+	if redisAuth == "" {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.AUTH_NOT_EXIST_OR_EXPIRED))
+		return
+	}
+	log.Info(redisAuth)
+	log.Infof("%#v", user)
+	if user.AuthCode != redisAuth {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.AUTH_VERIFY_FAIL))
+		return
+	}
+	err = app.userService.CreateUser(model.User{
+		Username: user.Username,
+		Password: user.Password,
+	})
 	if err != nil {
 		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.REGISTER_FAIL))
 		return
@@ -406,6 +432,93 @@ func (app *App) CreateCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
 }
 
+func (app *App) ToggleKeyContent(c *gin.Context) {
+	id := c.Param("id")
+	cid, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_FORM_PARAMETER))
+		return
+	}
+	err = app.contentService.ToggleKeyContent(cid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.TOGGLE_KEY_CONTENT_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
+func (app *App) WSChat(c *gin.Context) {
+	conn, err := (&websocket.Upgrader{ CheckOrigin: func (r *http.Request) bool { return true } }).Upgrade(c.Writer, c.Request, nil)
+	if err != nil {
+		http.NotFound(c.Writer, c.Request)
+		return
+	}
+	client := &ws.Client{ID: wsid.NewV4().String(), Socket: conn, Send: make(chan []byte),}
+	ws.Manager.Register <- client
+	go client.Write()
+	go client.Read()
+}
+
+func (app *App) GetCommentsByUid(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	comments, err := app.commentService.GetCommentByUid(uid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.FETCH_COMMENT_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SetData("data", comments)))
+}
+
+func (app *App) DelCommentById(c *gin.Context) {
+	id := c.Param("id")
+	cid, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_PATH_PARAMETER))
+		return
+	}
+	err = app.commentService.DelCommentById(cid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.DELETE_COMMENT_FAIL))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
+func (app *App) GetRegisterAuthMail(c *gin.Context) {
+	var user model.User
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.INVALID_FORM_PARAMETER))
+		return
+	}
+	if !utils.CheckMail(user.Username) {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UNSUPPORTED_MAIL))
+		return
+	}
+	auth, _ := config.GetRedisClient().Get(user.Username + "_auth")
+	if auth != "" {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.AUTH_MAIL_ALREADY_SENT))
+		return
+	}
+	auth = utils.GenAuthCode(6)
+	err = utils.SendMail("Auth Mail", "Your auth code: " + auth + ", and it will expire in 5min.", user.Username)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.AUTH_MAIL_ALREADY_SENT))
+		return
+	}
+	err = config.GetRedisClient().Set(user.Username + "_auth", auth, time.Second * 300)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorHelper(err, utils.UNKNOWN_ERROR))
+		return
+	}
+	c.JSON(http.StatusOK, RespHelper(SuccessResp()))
+}
+
 func main() {
 	app := Init()
 	//gin.SetMode(gin.ReleaseMode)
@@ -427,6 +540,7 @@ func main() {
 		guestRouter.GET("/profile/id/:id", app.GetUserProfileById)
 		guestRouter.GET("/profile/username/:username", app.GetUserProfileByName)
 		guestRouter.GET("/cats", app.GetCategories)
+		guestRouter.POST("/auth/mail", app.GetRegisterAuthMail)
 	}
 
 	clientRouter := r.Group("/u")
@@ -439,12 +553,15 @@ func main() {
 		clientRouter.POST("/profile/update", app.UpdateUserProfile)
 		clientRouter.GET("/logout/:username", app.UserLogout)
 		clientRouter.POST("/comment", app.CreateComment)
+		clientRouter.GET("/comment/delete/:id", app.DelCommentById)
+		clientRouter.GET("/comment/u/:id", app.GetCommentsByUid)
 		clientRouter.GET("/fav/:uid/:cid", app.CreateFavorite)
 		clientRouter.GET("/vaf/:uid/:cid", app.DeleteFavorite)
 		clientRouter.GET("/content/:cid/:uid", app.UserGetContentById)
 		clientRouter.POST("/link", app.CreateLink)
 		clientRouter.GET("/link/:id", app.DeleteLink)
 		clientRouter.GET("/links/:id", app.GetLinksByUserId)
+		clientRouter.GET("/ws", app.WSChat)
 	}
 
 	adminRouter := r.Group("/a")
@@ -452,6 +569,7 @@ func main() {
 	adminRouter.Use(middleware.AdminAuth())
 	{
 		adminRouter.POST("/category", app.CreateCategory)
+		adminRouter.GET("/content/:id/toggle", app.ToggleKeyContent)
 	}
 
 	r.Run(":" + strconv.Itoa(app.serverConfig.Http.Port))

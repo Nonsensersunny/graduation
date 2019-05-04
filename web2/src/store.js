@@ -22,7 +22,8 @@ export default new Vuex.Store({
     profile(state) { return state.profile },
     selectedLang(state) { return state.lang },
     langs(state) { return state.langs },
-    categories(state) { return state.cats }
+    categories(state) { return state.cats },
+    wsAddr(state) { return UserHttp.getWSAddr() }
   },
   mutations: {
     selectLang(state, lang) {
@@ -46,7 +47,7 @@ export default new Vuex.Store({
       context.state.isLogin = true
     },
     async userRegister(context, playload) {
-      await GuestHttp.signup(playload);
+      return await GuestHttp.signup(playload);
     },
     async userLogout(context) {
       await UserHttp.userLogout(context.state.profile.username)
@@ -106,6 +107,18 @@ export default new Vuex.Store({
     },
     async createCategory(context, category) {
       return await AdminHttp.createCategory(category)
+    },
+    async toggleKeyContent(context, id) {
+      return await AdminHttp.toggleKeyContent(id)
+    },
+    async getCommentsByUid(context, id) {
+      return await UserHttp.getCommentsByUid(id)
+    },
+    async delCommentById(context, id) {
+      return await UserHttp.delCommentById(id)
+    },
+    async getAuthMail(context, user) {
+      return await GuestHttp.getAuthMail(user)
     }
   }
 })

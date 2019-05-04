@@ -26,7 +26,20 @@
     "comment": "Comment"
   },
   "about": {
-
+    "DA": "Demand analysis",
+    "ERD": "E-R Diagram",
+    "SAD": "System Architecture Diagram",
+    "UCD": "Use Case Diagram",
+    "IP": "Implementation",
+    "RC": "Reconstruction",
+    "SC": "Source Code",
+    "DP": "Deployment",
+    "DD": "DEPRECATED",
+    "LP": "Live",
+    "TL": "Time Line",
+    "CCL": "Conclusion",
+    "STK": "Stack",
+    "THK": "Thanks"
   },
   "article": {
     "T": "Time",
@@ -61,7 +74,15 @@
     "size_e": "Size < 2M supported",
     "UAF": "Update avatar failed",
     "UPS": "Update profile success",
-    "UPF": "Update profile failed"
+    "UPF": "Update profile failed",
+    "W": "Weight",
+    "N": "Name",
+    "T": "Time",
+    "CC": "Content",
+    "OP": "Operation",
+    "V": "View",
+    "L": "Link",
+    "DC": "Delete"
   },
   "vote": {
 
@@ -72,11 +93,26 @@
   "signin": {
     "U": "Username",
     "P": "Password",
-    "S": "SIGNIN",
+    "S": "LOGIN",
     "login_s": "LOGIN SUCCESS",
     "login_f": "LOGIN FAILED",
     "signup_s": "SIGNUP SUCCESS",
-    "signup_f": "SIGNUP FAILED"
+    "signup_f": "SIGNUP FAILED",
+    "R": "Register",
+    "F": "Forget",
+    "AC": "Auth Code",
+    "CP": "Confirm",
+    "AMS": "Auth mail sent",
+    "AMF": "Auth mail send fail",
+    "MS": "Only mail supported",
+    "EUF": "Enter username first",
+    "EP": "Enter password",
+    "PC": "Password conflict",
+    "GAC": "Get Auth Code",
+    "IM": "Invalid mail",
+    "IP": "Invalid password",
+    "EPA": "Confirm password",
+    "RS": "Resend"
   },
   "writer": {
     "W": "Write",
@@ -123,7 +159,11 @@
     "Recruit": "Recruitment",
     "Topic": "Topic",
     "Vote": "Vote",
-    "H": "HOT"
+    "H": "HOT",
+    "OS": "Operation succeed",
+    "OF": "Operation failed",
+    "PH": "Make Hot",
+    "CH": "Cancel Hot"
   },
   "mdisplay": {
 
