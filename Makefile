@@ -18,6 +18,7 @@ go-build:
 	go build -o bin/${PROGRAM} ${PROGRAM}/cmd
 
 build:
+	rm -rf dist && mkdir dist
 	go build -o bin/${PROGRAM} ${PROGRAM}/cmd
 	cd web2; npm run build
 	mkdir -p dist/html
