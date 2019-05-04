@@ -521,7 +521,7 @@ func (app *App) GetRegisterAuthMail(c *gin.Context) {
 
 func main() {
 	app := Init()
-	//gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	corsConfig := cors.DefaultConfig()
