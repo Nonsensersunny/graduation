@@ -5,3 +5,5 @@ node_modules
 .idea
 dist
 graduation
+/vendor
+main

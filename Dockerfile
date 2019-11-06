@@ -1,24 +1,14 @@
-FROM golang
+FROM golang:latest AS build
+RUN mkdir /app
+ADD . /app
+WORKDIR /app
+ENV GOPROXY=https://goproxy.io
+RUN go mod vendor && \
+    go build cmd/main.go
 
-RUN apt-get update
-RUN apt-get install -y gcc libc-dev
-RUN apt-get install -y make
-RUN apt-get install -y nginx
-
-ENV SERVER_PATH=/opt/server
-
-ADD dist ${SERVER_PATH}
-
-RUN ls ${SERVER_PATH}
-
-RUN pwd
-
-RUN ls ${SERVER_PATH}
-
-WORKDIR ${SERVER_PATH}
-
-EXPOSE 80
-EXPOSE 8080
-
-CMD ["nginx", "start"]
-ENTRYPOINT ./dist/graduation
+FROM debian:latest
+RUN mkdir /config
+COPY --from=build /app/main .
+COPY --from=build /app/config/config.yml /config/
+ENTRYPOINT ["./main"]
+EXPOSE 8888

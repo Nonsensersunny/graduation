@@ -35,3 +35,6 @@ login:
 push: login build
 	docker build . -t ${PROGRAM}:${TAG}
 	docker push ${PROGRAM}:${TAG}
+
+run:
+	docker-compose up -d

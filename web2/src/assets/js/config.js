@@ -4,6 +4,6 @@ export const leancloud = {
 }
 
 export const server = {
-    host: "47.94.233.125",
-    port: "8100"
+    host: "192.168.16.5",
+    port: "8888"
 }
