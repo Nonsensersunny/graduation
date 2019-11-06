@@ -8,7 +8,7 @@ services:
     networks:
       - graduation_net
     ports:
-      - "8080:80"
+      - "8093:80"
   server:
     build: .
     restart: always
@@ -22,6 +22,8 @@ services:
       - redis
     networks:
       - graduation_net
+    volumes:
+      - /data/graduation/config:/config
   mysql:
     image: mysql:latest
     environment:
