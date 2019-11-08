@@ -3,6 +3,7 @@ RUN mkdir -p /go/src/app
 ADD . /go/src/app
 WORKDIR /go/src/app
 ENV GOPROXY=https://goproxy.io
+ENV GO111MODULE=on
 RUN go mod vendor && \
     go build cmd/main.go
 
