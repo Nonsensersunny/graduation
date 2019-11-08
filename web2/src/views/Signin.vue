@@ -180,13 +180,20 @@
 </script>
 <style lang="stylus">
     .signin {
-        margin: 0 auto;
+        
+        margin: 100px auto;
+        padding:30px;
+        border-radius: 15px;
+        height :250px;
         width: 300px;
-        padding-top: 100px;
-        /*background-image: linear-gradient(#eee, #fff);*/
+        // padding-top: 100px;
+        background: rgba(#2BB3D5,0.3);
+    }
+    .el-form-item__label{
+        color:#fff;
     }
     .operation {
         text-align: center;
-        padding-bottom: 200px;
+        margin-bottom: 200px;
     }
 </style>
