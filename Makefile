@@ -36,5 +36,8 @@ push: login build
 	docker build . -t ${PROGRAM}:${TAG}
 	docker push ${PROGRAM}:${TAG}
 
-run:
+config:
+	mv config/config.example.yml config/config.yml
+
+run: config
 	docker-compose up -d
