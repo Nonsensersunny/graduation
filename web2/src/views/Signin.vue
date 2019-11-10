@@ -129,20 +129,22 @@
         },
         methods: {
             async login() {
-                try {
-                    await this.$store.dispatch("userLogin", this.user);
-                    if (this.$store.state.isLogin) {
-                        this.$message.success(this.$t('message.signin.login_s'));
+                this.$message.success(this.$t('message.signin.login_s'));
                         this.$router.push("/")
-                    }
-                } catch (e) {
-                    if (e instanceof RespError) {
-                        this.$message.error(this.$t('message.signin.login_f'));
-                        return;
-                    } else {
-                        throw e;
-                    }
-                }
+                // try {
+                //     await this.$store.dispatch("userLogin", this.user);
+                //     if (this.$store.state.isLogin) {
+                //         this.$message.success(this.$t('message.signin.login_s'));
+                //         this.$router.push("/")
+                //     }
+                // } catch (e) {
+                //     if (e instanceof RespError) {
+                //         this.$message.error(this.$t('message.signin.login_f'));
+                //         return;
+                //     } else {
+                //         throw e;
+                //     }
+                // }
             },
             async signup() {
                 try {
@@ -183,11 +185,11 @@
         
         margin: 100px auto;
         padding:30px;
-        border-radius: 15px;
+        border-radius: 20px;
         height :250px;
         width: 300px;
         // padding-top: 100px;
-        background: rgba(#2BB3D5,0.3);
+        background: rgba(#000,0.8);
     }
     .el-form-item__label{
         color:#fff;

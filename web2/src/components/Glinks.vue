@@ -13,7 +13,7 @@
                     placement="top"
                     width="240">
                 <strong>{{ $t("message.links.A") }}</strong>
-                <el-form label-position="left" label-width="60px" :model="link">
+                <el-form label-position="left" label-width="60px"  :model="link">
                     <el-form-item :label="$t('message.links.LN')">
                         <el-input v-model="link.name"></el-input>
                     </el-form-item>
@@ -29,6 +29,7 @@
         </el-card>
     </div>
 </template>
+
 
 <script>
     import {Link} from "@/assets/js/type";
@@ -105,8 +106,15 @@
     .clearfix:after {
         clear: both
     }
-
+.el-card{
+        background-color:rgba(0,0,0,0.7)
+        border-radius:10px;
+    }
+    .clearfix span{
+        color:#fff;
+    }
     .box-card {
         width: 200px;
     }
+
 </style>

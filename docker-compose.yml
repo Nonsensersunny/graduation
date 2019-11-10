@@ -3,8 +3,8 @@ services:
   web:
     build: web2/
     restart: always
-    links:
-      - "server:server"
+    depends_on:
+      - server
     networks:
       - graduation_net
     ports:
@@ -12,27 +12,39 @@ services:
   server:
     build: .
     restart: always
-    links:
-      - "mysql:mysql"
-      - "influxdb:influxdb"
-      - "redis:redis"
     depends_on:
       - mysql
       - influxdb
       - redis
     networks:
-      - graduation_net
+      graduation_net:
+        aliases:
+            - server
     volumes:
       - /data/graduation/config:/config
+    ports:
+      - "8888:8888"
   mysql:
     image: mysql:latest
     environment:
       MYSQL_DATABASE: graduation
       MYSQL_ROOT_PASSWORD: graduation
+    networks:
+      graduation_net:
+          aliases:
+              - mysql
   influxdb:
     image: influxdb
+    networks:
+      graduation_net:
+          aliases:
+              - influxdb
   redis:
     image: redis
+    networks:
+      graduation_net:
+        aliases:
+            - redis
 
 networks:
   graduation_net:

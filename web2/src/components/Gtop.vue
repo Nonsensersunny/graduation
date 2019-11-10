@@ -56,7 +56,13 @@
     .clearfix:after {
         clear: both
     }
-
+.el-card{
+        background-color:rgba(0,0,0,0.7)
+        border-radius:10px;
+    }
+    .clearfix span{
+        color:#fff;
+    }
     .box-card {
         width: 200px;
     }

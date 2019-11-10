@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <Gcontent :content="mockContent" v-if="!isLogin" class="main-content" />
+    <!-- <Gcontent :content="mockContent" v-if="!isLogin" class="main-content" /> -->
+    <Gcontent :content="mockContent" v-if="isLogin" class="main-content" />
     <el-container v-else>
       <el-main><Gcontent :content="mockContent" /></el-main>
       <el-aside width="230px" class="side-board">
@@ -54,6 +55,7 @@ export default {
   .side-board {
 
   }
+
   .side-board * {
     margin-top: 10px;
     padding: 10px 0 10px 0;
