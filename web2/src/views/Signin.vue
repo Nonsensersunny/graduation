@@ -2,7 +2,9 @@
     <div class="signin">
 <!--        <img alt="Vue logo" src="../assets/logo.png">-->
 <!--        <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-        <el-form :model="user">
+        <el-form :model="user" >
+            <div style="color:#fff;text-align:center;border-bottom:1px solid #fff;font-size:20px;">
+            <p >在线学习平台</p></div>
             <el-form-item :label="$t('message.signin.U')" required><el-input v-model="user.username"></el-input> </el-form-item>
             <el-form-item :label="$t('message.signin.P')" required><el-input type="password" auto-complete="false" @keyup.enter.native="login" v-model="user.password"></el-input> </el-form-item>
             <!--<el-link type="primary" @click="isRegister = true">{{ $t('message.signin.R') }}</el-link>-->
@@ -186,13 +188,19 @@
         margin: 100px auto;
         padding:30px;
         border-radius: 20px;
-        height :250px;
+        height :40%;
         width: 300px;
         // padding-top: 100px;
         background: rgba(#000,0.8);
     }
     .el-form-item__label{
         color:#fff;
+    }
+    .el-dialog{
+        background-color :#eee;
+        .el-form-item__label{
+            color #000;
+        }
     }
     .operation {
         text-align: center;

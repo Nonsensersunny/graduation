@@ -6,8 +6,9 @@
                 <!--<el-button style="float: right; padding: 3px 0" type="text">{{ $t('message.common.more') }}>></el-button>-->
             </div>
             <div v-for="content in contents" :key="content.id" class="text item" @click="goDetail(content.category, content.id)">
-                <el-tag type="primary">{{ $t('message.list.' + content.category) }}</el-tag>
-                <span style="margin-left: 10px; overflow: hidden">{{ content.title }}</span>
+                <!-- <el-tag type="primary">{{ $t('message.list.' + content.category) }}</el-tag> -->
+                <el-tag style="margin:0;" type="primary" size="small">{{  content.category }}</el-tag>
+                <span style="margin-left: 10px; text-overflow:scroll;color:#fff;">{{ content.title }}</span>
             </div>
         </el-card>
     </div>
@@ -21,7 +22,8 @@
         },
         data() {
             return {
-                contents: [],
+                contents: [{id:0,category:'计算机',title:'主流编程语言'},
+                {id:1,category:'Python',title:'Python的优点'}],
             }
         },
         methods: {
@@ -60,6 +62,7 @@
         background-color:rgba(0,0,0,0.7)
         border-radius:10px;
     }
+   
     .clearfix span{
         color:#fff;
     }

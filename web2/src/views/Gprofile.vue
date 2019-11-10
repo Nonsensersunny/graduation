@@ -112,10 +112,11 @@
       </el-col>
     </el-row>
     <el-dialog :title="$t('message.profile.EP')" :visible.sync="editable">
-      <el-form :model="user">
+      <el-form :model="user" style="text-align:center">
         <el-form-item :title="$t('message.profile.avatar')">
           <span>上传头像：</span>
           <el-upload
+            class="uploadimg"
             action="''"
             :http-request="catchAvatar"
             :show-file-list="false"
@@ -125,10 +126,20 @@
             :on-preview="handlePictureCardPreview"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="user.avatar" :src="user.avatar" width="100px" height="100px" />
+            <img v-if="user.avatar" :src="user.avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
+        <el-form-item>
+          <span>{{ $t('message.profile.S')+"：" }}</span>
+          <el-radio
+            style="margin-left:15px;"
+            v-model="user.sex"
+            :label="1"
+          >{{ $t('message.profile.boy') }}</el-radio>
+          <el-radio v-model="user.sex" :label="0">{{ $t('message.profile.girl') }}</el-radio>
+        </el-form-item>
+
         <el-form-item>
           <span>姓名:</span>
           <el-input
@@ -138,15 +149,20 @@
             autocomplete="off"
           ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('message.profile.S')">
-          <el-radio v-model="user.sex" :label="1">{{ $t('message.profile.boy') }}</el-radio>
-          <el-radio v-model="user.sex" :label="0">{{ $t('message.profile.girl') }}</el-radio>
-        </el-form-item>
         <el-form-item>
-          <el-input placeholder="example@example.com" v-model="user.mail" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
+          <span>邮箱:</span>
           <el-input
+            style="width:80%;margin-left:15px;"
+            placeholder="example@example.com"
+            v-model="user.mail"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <span>介绍:</span>
+
+          <el-input
+            style="width:80%;margin-left:15px;"
             :placeholder="$t('message.profile.D')"
             v-model="user.description"
             autocomplete="off"
@@ -207,10 +223,10 @@ export default {
       return this.$route.params["id"];
     },
     canOperate() {
-        return 1;
-    //   return (
-    //     this.id == this.$store.getters.profile.id && this.$store.state.isLogin
-    //   );
+      return 1;
+      //   return (
+      //     this.id == this.$store.getters.profile.id && this.$store.state.isLogin
+      //   );
     }
   },
   methods: {
@@ -354,14 +370,13 @@ export default {
 
 .profile {
   width: 95%;
-  height:800px;
-  margin :auto;
+  height: 800px;
+  margin: auto;
 }
 
 .box-card {
   padding: 20px;
-//   background-color :lightgrey;
-  border-radius :15px;
+  border-radius: 15px;
 }
 
 .box-card .left-panel {
@@ -392,7 +407,6 @@ export default {
 
 .el-card {
   color: #fff;
-  
 }
 
 .left-panel-card-info {
@@ -403,10 +417,9 @@ export default {
 .box-card .right-panel {
   flex: 0.8;
   margin-top: 30px;
-  height:250px ;
-//   background-color :lightgrey;
-  opacity:0.9;
-  border-radius :15px;
+  height: 250px;
+  opacity: 0.9;
+  border-radius: 15px;
 }
 
 .right-panel-items {
@@ -416,7 +429,7 @@ export default {
 .right-panel-items * {
   height: 80px;
   margin-bottom: 5px;
-  margin-top :15px;
+  margin-top: 15px;
   // padding: 10px;
   text-align: center;
 }
@@ -434,13 +447,14 @@ export default {
 .edit-icon {
   opacity: 0.2;
 }
-.edit-icon{
-    margin-left :15px;
-    color :white;
+
+.edit-icon {
+  margin-left: 15px;
+  color: white;
 }
+
 .edit-icon:hover {
   color: skyblue;
   opacity: 0.8;
 }
-
 </style>

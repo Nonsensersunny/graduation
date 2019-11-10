@@ -1,17 +1,20 @@
 <template>
     <div class="list">
-        <div v-for="(content, index) in contents" :key="content.id">
+        <div v-for="content in contents" :key="content.id">
             <el-divider content-position="left">{{ new Date(content.time).toLocaleString($store.state.lang) }}</el-divider>
             <el-row class="content-list-item" type="flex" :gutter="20">
                 <el-col :span="1" v-if="$store.getters.profile.role == 'admin'">
+                <!-- <el-col :span="1" > -->
                     <el-tooltip :content="content.is_key? $t('message.list.CH') : $t('message.list.PH')" placement="bottom">
                         <i :class="content.is_key? 'el-icon-lock' : 'el-icon-unlock'" @click="toggleKeyContent(content.id)"></i>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="3">
-                    <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + $t('message.list.' + content.category)" placement="bottom">
+                    <!-- <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + $t('message.list.' + content.category)" placement="bottom"> -->
+                    <el-tooltip class="item" effect="dark" :content="( ' 类型: ' + content.category)" placement="bottom">
                         <el-badge :value="content.is_key? $t('message.list.H') : ''" class="item">
-                            <el-tag style="position: relative; bottom: 8px;" type="info">{{ $t('message.list.' + content.category) }}</el-tag>
+                            <!-- <el-tag style="position: relative; bottom: 8px;" type="info">{{ $t('message.list.' + content.category) }}</el-tag> -->
+                            <el-tag style="position: relative; bottom: 8px;" type="info">{{  content.category }}</el-tag>
                         </el-badge>
                     </el-tooltip>
                 </el-col>
@@ -52,7 +55,8 @@
         },
         data() {
             return {
-                contents: [],
+                contents: [{index:0,id:1,author:'lilei',comment:'hahaha',category:'计算机',views:152,time:new Date('2019'),title:'主流编程语言'},
+                {index:1,id:2,author:'zhangdan',comment:'hahaha',category:'计算机',views:152,time:new Date('2019'),title:'论Python 的优点'}],
             }
         },
         computed: {
@@ -86,7 +90,7 @@
             }
         },
         created() {
-            this.getContentByCat(this.category)
+            // this.getContentByCat(this.category) 这是后来注释的
         },
         props: {
             msg: String,
