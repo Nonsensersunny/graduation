@@ -39,7 +39,9 @@
         data() {
             return {
                 category: new Category(),
-                cats:[{id:1,name:'IT',alias:'计算机'}]
+                cats:[{id:1,name:'IT',alias:'计算机'},
+                {id:1,name:'IT',alias:'技术'},
+                {id:1,name:'IT',alias:'问答'}]
             }
         },
         computed: {
@@ -78,7 +80,11 @@
 <style scoped lang="stylus">
  .content{
      background-color :lightgrey;
+     height:700px;
+     overflow-y:scroll;
+     
  }
+
  .el-tabs{
      background-color: lightgrey;
  }
