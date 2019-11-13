@@ -13,7 +13,7 @@
                     placement="top"
                     width="240">
                 <strong>{{ $t("message.links.A") }}</strong>
-                <el-form style="margin-top:15px;" size="small" label-position="left" label-width="60px"  :model="link">
+                <el-form style="margin-top:15px;" class="add" size="small" label-position="left" label-width="60px"  :model="link">
                     <el-form-item :label="$t('message.links.LN')">
                         <el-input v-model="link.name"></el-input>
                     </el-form-item>
@@ -111,10 +111,12 @@
         border-radius:10px;
     }
     .clearfix span{
-        color:#fff;
+        color:#000;
     }
     .box-card {
         width: 200px;
     }
-
+ .add label{
+    color:#000;
+}
 </style>
