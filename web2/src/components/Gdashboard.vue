@@ -34,6 +34,13 @@
         props: {
             activePath: ""
         },
+        data(){
+            return{
+                profile:{
+                    avatar:"https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                }
+            }
+        },
         methods: {
             goSomeWhere(path) {
                 this.$router.push(path)
@@ -69,8 +76,16 @@
     .box-card {
         width: 200px;
     }
+    .el-card{
+        background-color:rgba(0,0,0,0.7)
+        border-radius:10px;
+    }
+    .dashboard span{
+        color:#fff;
+    }
     .card-body {
         text-align: center;
+        color:#fff;
     }
     .operation {
         /*display: flex;*/

@@ -1,9 +1,10 @@
 <template>
   <div class="home">
-    <Gcontent :content="mockContent" v-if="!isLogin" class="main-content" />
+    <!-- <Gcontent :content="mockContent" v-if="!isLogin" class="main-content" /> -->
+    <Gcontent :content="mockContent" v-if="isLogin" class="main-content" />
     <el-container v-else>
       <el-main><Gcontent :content="mockContent" /></el-main>
-      <el-aside width="230px" class="side-board">
+      <el-aside width="230px" style="max-height:700px; overflow-y:scroll;" class="side-board">
         <Gdashboard activePath="share" />
         <Grank />
         <Gtop />
@@ -54,6 +55,7 @@ export default {
   .side-board {
 
   }
+
   .side-board * {
     margin-top: 10px;
     padding: 10px 0 10px 0;
@@ -61,4 +63,8 @@ export default {
   .main-content {
     margin: 5px 5px 20px 5px;
   }
+  
+.el-aside::-webkit-scrollbar {
+  display :none;
+}
 </style>

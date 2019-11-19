@@ -13,7 +13,7 @@
                     placement="top"
                     width="240">
                 <strong>{{ $t("message.links.A") }}</strong>
-                <el-form label-position="left" label-width="60px" :model="link">
+                <el-form style="margin-top:15px;" class="add" size="small" label-position="left" label-width="60px"  :model="link">
                     <el-form-item :label="$t('message.links.LN')">
                         <el-input v-model="link.name"></el-input>
                     </el-form-item>
@@ -21,7 +21,7 @@
                         <el-input v-model="link.href"></el-input>
                     </el-form-item>
                     <div style="text-align: center">
-                        <el-button @click="createLink" :disabled="!(link.href && link.href)">{{ $t('message.profile.confirm') }}</el-button>
+                        <el-button  @click="createLink" :disabled="!(link.href && link.href)">{{ $t('message.profile.confirm') }}</el-button>
                     </div>
                 </el-form>
                 <i slot="reference" class="el-icon-circle-plus-outline"></i>
@@ -29,6 +29,7 @@
         </el-card>
     </div>
 </template>
+
 
 <script>
     import {Link} from "@/assets/js/type";
@@ -105,8 +106,17 @@
     .clearfix:after {
         clear: both
     }
-
+.el-card{
+        background-color:rgba(0,0,0,0.7)
+        border-radius:10px;
+    }
+    .clearfix span{
+        color:#000;
+    }
     .box-card {
         width: 200px;
     }
+ .add label{
+    color:#000;
+}
 </style>

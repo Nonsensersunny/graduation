@@ -29,7 +29,12 @@
         },
         computed: {
             rankedUsers() {
-                return this.$store.getters.rankedUsers
+                return [{id:0,grades:888,username:'lilei'},
+                {id:1,grades:756,username:'panda'},
+                // {id:2,grades:745,username:'zhangsan'},
+                // {id:3,grades:701,username:'zhaojuwen'},
+                {id:4,grades:555,username:'hahaha'}]
+                // return this.$store.getters.rankedUsers
             }
         },
         methods: {
@@ -61,24 +66,34 @@
     .clearfix:after {
         clear: both
     }
-
+.el-card{
+        background-color:rgba(0,0,0,0.7)
+        border-radius:10px;
+    }
+    .clearfix span{
+        color:#fff;
+    }
     .box-card {
         width: 200px;
     }
     .rank {
         width: 100%;
+       
     }
+ 
     .rank-list {
         width: 100%;
         .index {
             margin-right: 15px;
             font-style: italic;
+             color :#fff;
         }
         .grades {
             margin-right: 15px;
+            color :#ccc;
         }
         .username {
-
+        color :#ccc;
         }
     }
 </style>

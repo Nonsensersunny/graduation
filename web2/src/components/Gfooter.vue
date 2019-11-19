@@ -23,11 +23,15 @@
 .footer {
     text-align: center;
     position: sticky;
-    bottom: 0;
+    color :#000;
+    margin-bottom: 0;
 }
     .resume {
         color: skyblue;
         text-decoration: none;
+    }
+    .el-link.el-link--default{
+        color :#000;
     }
 .resume:hover {
     color: deepskyblue;

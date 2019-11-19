@@ -1,17 +1,20 @@
 <template>
     <div class="list">
-        <div v-for="(content, index) in contents" :key="content.id">
+        <div  v-for="content in contents" :key="content.id">
             <el-divider content-position="left">{{ new Date(content.time).toLocaleString($store.state.lang) }}</el-divider>
             <el-row class="content-list-item" type="flex" :gutter="20">
                 <el-col :span="1" v-if="$store.getters.profile.role == 'admin'">
+                <!-- <el-col :span="1" > -->
                     <el-tooltip :content="content.is_key? $t('message.list.CH') : $t('message.list.PH')" placement="bottom">
                         <i :class="content.is_key? 'el-icon-lock' : 'el-icon-unlock'" @click="toggleKeyContent(content.id)"></i>
                     </el-tooltip>
                 </el-col>
                 <el-col :span="3">
-                    <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + $t('message.list.' + content.category)" placement="bottom">
+                    <!-- <el-tooltip class="item" effect="dark" :content="$t('message.common.category') + ' : ' + $t('message.list.' + content.category)" placement="bottom"> -->
+                    <el-tooltip class="item" effect="dark" :content="( ' 类型: ' + content.category)" placement="bottom">
                         <el-badge :value="content.is_key? $t('message.list.H') : ''" class="item">
-                            <el-tag style="position: relative; bottom: 8px;" type="info">{{ $t('message.list.' + content.category) }}</el-tag>
+                            <!-- <el-tag style="position: relative; bottom: 8px;" type="info">{{ $t('message.list.' + content.category) }}</el-tag> -->
+                            <el-tag style="position: relative; bottom: 8px;" type="info">{{  content.category }}</el-tag>
                         </el-badge>
                     </el-tooltip>
                 </el-col>
@@ -32,7 +35,7 @@
                 </el-col>
                 <el-col :span="3">
                     <el-tooltip class="item" effect="dark" :content="$t('message.common.comment') + ' : ' + content.author" placement="bottom">
-                        <span><i class="el-icon-chat-dot-square"></i> {{ content.author }}</span>
+                        <span><i class="el-icon-chat-dot-square"></i> {{ content.comment }}</span>
                     </el-tooltip>
                 </el-col>
             </el-row>
@@ -52,7 +55,15 @@
         },
         data() {
             return {
-                contents: [],
+                contents: [{index:0,id:1,author:'lilei',comment:'有用',category:'干货',views:1152,time:new Date('2019/10/5'),title:'主流编程语言'},
+                {index:1,id:2,author:'zhangdan',comment:'get',category:'技术',views:845,time:new Date('2019/11/2'),title:'论Python 的优点'},
+                {index:2,id:3,author:'zhaojuwen',comment:'求问+1',category:'技术',views:12,time:new Date('2019/11/3'),title:'如何学好java'},
+                {index:3,id:4,author:'liyingying',comment:'感觉还是vue好用',category:'问答',views:45,time:new Date('2019/10/29'),title:'请问前端框架哪个更好'},
+                {index:4,id:5,author:'liuchen',comment:'好难啊',category:'问答',views:45,time:new Date('2019/11/10'),title:'axios跨域问题怎么解决'},
+                {index:5,id:6,author:'tangwen',comment:'感谢大佬',category:'计算机',views:33,time:new Date('2019/11/7'),title:'完整的tensorflow安装教程'},
+                {index:6,id:7,author:'wangjian',comment:'不是很懂',category:'计算机',views:444,time:new Date('2019/11/11'),title:'数据挖掘与数据场'},
+
+                ],
             }
         },
         computed: {
@@ -86,7 +97,7 @@
             }
         },
         created() {
-            this.getContentByCat(this.category)
+            // this.getContentByCat(this.category) 这是后来注释的
         },
         props: {
             msg: String,

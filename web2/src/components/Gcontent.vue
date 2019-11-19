@@ -7,7 +7,8 @@
             <el-tab-pane v-for="cat in cats" :key="cat.id" :label="$store.state.lang == 'en'? cat.name : cat.alias">
                 <Glist :category="cat.name" />
             </el-tab-pane>
-            <el-tab-pane label="+" v-if="$store.getters.profile.role == 'admin'">
+            <!-- <el-tab-pane label="+" v-if="$store.getters.profile.role == 'admin'"> -->
+            <el-tab-pane label="+" >
                 <el-form label-position="left" label-width="80px" :model="category">
                     <el-form-item :label="$t('message.content.N')">
                         <el-input v-model="category.name"></el-input>
@@ -37,7 +38,10 @@
         },
         data() {
             return {
-                category: new Category()
+                category: new Category(),
+                cats:[{id:1,name:'IT',alias:'计算机'},
+                {id:1,name:'IT',alias:'技术'},
+                {id:1,name:'IT',alias:'问答'}]
             }
         },
         computed: {
@@ -74,5 +78,17 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="stylus">
+ .content{
+     background-color :lightgrey;
+     height:700px;
+     overflow-y:scroll;
+     
+ }
 
+ .el-tabs{
+     background-color: lightgrey;
+ }
+ .el-tabs__header{
+     opacity :0.8;
+ }
 </style>

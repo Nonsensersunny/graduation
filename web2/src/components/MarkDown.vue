@@ -50,5 +50,7 @@
     }
 </script>
 <style>
-
+.el-tabs{
+    background-color: #eee;
+}
 </style>
