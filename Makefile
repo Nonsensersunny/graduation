@@ -41,3 +41,9 @@ config:
 
 run: config
 	docker-compose up -d
+
+jenkins-build:
+	docker-compose build
+
+jenkins-deploy:
+	docker-compose up -d
