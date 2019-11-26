@@ -5,10 +5,9 @@ services:
     restart: always
     depends_on:
       - server
-    networks:
-      - graduation_net
     ports:
       - "8093:80"
+
   server:
     build: .
     restart: always
@@ -16,35 +15,17 @@ services:
       - mysql
       - influxdb
       - redis
-    networks:
-      graduation_net:
-        aliases:
-            - server
     volumes:
       - /data/graduation/config:/config
-    ports:
-      - "8888:8888"
+
   mysql:
     image: mysql:latest
     environment:
       MYSQL_DATABASE: graduation
       MYSQL_ROOT_PASSWORD: graduation
-    networks:
-      graduation_net:
-          aliases:
-              - mysql
+
   influxdb:
     image: influxdb
-    networks:
-      graduation_net:
-          aliases:
-              - influxdb
+
   redis:
     image: redis
-    networks:
-      graduation_net:
-        aliases:
-            - redis
-
-networks:
-  graduation_net:
